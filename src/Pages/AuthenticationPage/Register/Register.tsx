@@ -6,12 +6,13 @@ import {
   PasswordInput,
 } from "../../../Components/UI/Formik/FormikFields";
 import { AuthCard, CustomButton } from "../../../Components/UI";
-import { signIn } from "../../../Api/user.action";
+import { signUp } from "../../../Api/user.action";
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
   const initialValues = {
     email: "",
+    username: "",
     password: "",
   };
 
@@ -19,25 +20,23 @@ const Login = () => {
     email: Yup.string()
       .email("Please Enter Valid Email Address")
       .required("Please Enter Email Address"),
-    password: Yup.string().required("Please Enter Password"),
+    username: Yup.string().required("Please Enter Username"),
+    password: Yup.string().required("Please Enter Ypur Password"),
   });
   const onSubmit = async (values: any) => {
-    const loginDetails: any = {
+    const registerDetails: any = {
       email: values?.email,
+      username: values?.username,
       password: values?.password,
     };
-    const result: any = await signIn(loginDetails);
+    const result: any = await signUp(registerDetails);
     if (result?.status === 200) {
-      navigate("/dashboard");
+      navigate("/");
     } else {
     }
   };
   return (
-    <AuthCard
-      isLogo
-      title="Login to Admin"
-      subtitle="Enter your account details to login"
-    >
+    <AuthCard isLogo title="Register to Admin">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -55,6 +54,16 @@ const Login = () => {
               formik={formik}
               name="email"
             />
+            <Input
+              label="username"
+              placeholder="Admin"
+              type="username"
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values?.username}
+              formik={formik}
+              name="username"
+            />
             <PasswordInput
               label="Password"
               placeholder="#12345%&%$"
@@ -68,9 +77,9 @@ const Login = () => {
               <Link to="/forgot-password">Forgot Password</Link>
             </div> */}
             <CustomButton
-              text="Login"
+              text="Register"
               className="w-100"
-              disabled={!formik?.isValid}
+              disabled={!formik.isValid}
             />
           </Form>
         )}
@@ -79,4 +88,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

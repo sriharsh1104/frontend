@@ -2,7 +2,7 @@ import store from "../Redux/store";
 import { apiCallPost } from "../Services/axios.service";
 import { APIURL } from "../utils/constant";
 
-export const Login = async (data: any): Promise<any> => {
+export const signIn = async (data: any): Promise<any> => {
   // const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
 
   // const headers = {
@@ -23,11 +23,11 @@ export const Login = async (data: any): Promise<any> => {
     );
     return result;
   } catch (error) {
-    console.log("error updatePassword", error);
+    console.log("error login", error);
     throw error;
   }
 };
-export const Register = async (data: any): Promise<any> => {
+export const signUp = async (data: any): Promise<any> => {
   // const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
 
   // const headers = {
@@ -37,7 +37,7 @@ export const Register = async (data: any): Promise<any> => {
   const { email, password, username } = data;
   try {
     let result: any = await apiCallPost(
-      APIURL["LOGIN"],
+      APIURL["REGISTER"],
       {
         email: email,
         password: password,
@@ -49,7 +49,7 @@ export const Register = async (data: any): Promise<any> => {
     );
     return result;
   } catch (error) {
-    console.log("error updatePassword", error);
+    console.log("error register", error);
     throw error;
   }
 };

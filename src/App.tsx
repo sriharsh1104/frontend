@@ -4,6 +4,7 @@ import PrimaryLayout from "./Components/Layout/PrimaryLayout/PrimaryLayout";
 import { AuthLayout, Dashboard, History, Login } from "./Pages";
 
 import { Loader } from "./Components/UI";
+import Register from "./Pages/AuthenticationPage/Register/Register";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Register />,
       },
       // {
       //   path: "forgot-password",
