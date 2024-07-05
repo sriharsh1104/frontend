@@ -31,6 +31,7 @@ const MyBlog = () => {
       toast.error(result?.message);
     }
   };
+  
   return (
     <AuthCard
       isLogo

@@ -90,12 +90,67 @@ export const createBlog = async (data: any): Promise<any> => {
     "Content-Type": "application/json",
     Authorization: `${accessToken}`,
   };
-  console.log('accessToken', accessToken)
+  console.log("accessToken", accessToken);
   const { title, description } = data;
 
   try {
     let result: any = await apiCallPost(
       APIURL["CREATE_BLOG"],
+      {
+        title: title,
+        description: description,
+      },
+      {},
+      false,
+      headers
+    );
+    return result;
+  } catch (error) {
+    console.log("error register", error);
+    throw error;
+  }
+};
+
+export const deleteBlog = async (data: any): Promise<any> => {
+  const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `${accessToken}`,
+  };
+  console.log("accessToken", accessToken);
+  const { id } = data;
+
+  try {
+    let result: any = await apiCallPost(
+      APIURL["DELETE_BLOG"],
+      {
+        id: id,
+      },
+      {},
+      false,
+      headers
+    );
+    return result;
+  } catch (error) {
+    console.log("error register", error);
+    throw error;
+  }
+};
+
+export const updateBlog = async (data: any): Promise<any> => {
+  const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `${accessToken}`,
+  };
+  console.log("accessToken", accessToken);
+  const { title, description } = data;
+
+  try {
+    let result: any = await apiCallPost(
+      APIURL["DELETE_BLOG"],
       {
         title: title,
         description: description,
