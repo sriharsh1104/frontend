@@ -8,7 +8,7 @@ import {
   TxnsIcon,
 } from "../../Assets/Icon/svg/SvgIcons";
 import "./Dashboard.scss";
-import { dashboardBlog } from "../../Api/user.action";
+import { dashboardBlog, userSpecifiedBlog } from "../../Api/user.action";
 
 const settingCard = [
   {
@@ -34,7 +34,7 @@ const settingCard = [
   },
 ];
 
-const Dashboard = () => {
+const MyBlog = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dashboardBlog(); // Adjust the API endpoint as necessary
+        const response = await userSpecifiedBlog(); // Adjust the API endpoint as necessary
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {
@@ -94,4 +94,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default MyBlog;

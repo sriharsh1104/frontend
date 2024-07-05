@@ -75,3 +75,25 @@ export const dashboardBlog = async (): Promise<any> => {
     throw error;
   }
 };
+
+export const userSpecifiedBlog = async (): Promise<any> => {
+  const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
+
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": `${accessToken}`,
+  };
+  console.log('accessToken', accessToken)
+  try {
+    let result: any = await apiCallGet(
+      APIURL["GET_USER_SPECIFIED_BLOG"],
+      {},
+      false,
+      headers
+    );
+    return result;
+  } catch (error) {
+    console.log("error register", error);
+    throw error;
+  }
+};

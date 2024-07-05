@@ -28,6 +28,11 @@ const Sidebar = (props: propTypes) => {
       text: "History",
       link: "/history",
     },
+    {
+      icon: <DashboardIcon />,
+      text: "MyBlog",
+      link: "/myBlog",
+    },
   ];
 
   const [show, setShow] = useState(false);
