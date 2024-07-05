@@ -1,118 +1,183 @@
 import axios from "axios";
 import { API_HOST } from "../utils/constant";
+import toast from "react-hot-toast";
+import { formatUrl } from "./Helpers/common.services";
+// import { formatUrl } from "./Helpers/common.services";
+// import { API_HOST } from "../constant";
+// import toast from "react-hot-toast";
 
 axios.defaults.baseURL = API_HOST;
 
-let failedQueue: any = [];
-
-const processQueue = (error: any, token = null) => {
-  failedQueue.forEach((prom: any) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
-  });
-  failedQueue = [];
+export const RESPONSES: any = {
+  SUCCESS: 200,
+  CREATED: 201,
+  ACCEPTED: 202,
+  NOCONTENT: 204,
+  BADREQUEST: 400,
+  UN_AUTHORIZED: 401,
+  INVALID_REQ: 422,
+  FORBIDDEN: 403,
+  NOTFOUND: 404,
+  TIMEOUT: 408,
+  TOOMANYREQ: 429,
+  INTERNALSERVER: 500,
+  BADGATEWAYS: 502,
+  SERVICEUNAVILABLE: 503,
+  GATEWAYTIMEOUT: 504,
 };
 
-/**AXIOS INTERCEPTOR */
+let isServerDown = false; // Flag to track server status
+
+// axios request interceptor
 axios.interceptors.request.use(
-  (config) => {
-    // let walletAddress = storeInstance.getState().user.walletAddress;
-    config.headers["authorization"] = localStorage.getItem("token");
-    config.headers["Content-Type"] = "application/json";
-    config.headers["Access-Control-Allow-Origin"] = "*";
+  (config: any) => {
     return config;
   },
-  (error) => {
+  (error: any) => {
     return error;
   }
 );
 
-/**HANDLE AXIOS RESPONSE */
+// axios response interceptor
 axios.interceptors.response.use(
-  (response) => {
+  (response: any) => {
     return response;
   },
-  (error) => {
+  (error: any) => {
+    // if (error?.response?.status === 401) {
+    //   localStorage.clear();
+    //   window.location.replace("/");
+    // }
+    console.log("error", error);
     if (!error.response) {
-      // toaster.error("Server not responding. Please try again later.");
-    } else {
-      return manageErrorConnection(error);
+      // Server is down or no response received
+      isServerDown = true; // Set the flag to true when server is down
+      toast.error("Server is currently unreachable. Please try again later."); // This line displays a toaster message
     }
-
-    const originalRequest = error.config;
-    failedQueue.push(originalRequest);
-    // CommonService.handleJWTExpiry(error)
-    if (error.response.status === 403) {
-      processQueue(error, null);
-    }
+    return error.response;
   }
 );
-/**HANDLE AXIOS ERROR */
-function manageErrorConnection(err: any) {
-  if (
-    err.response &&
-    err.response.status >= 400 &&
-    err.response.status <= 500
-  ) {
-    // toaster.error(err.response.data.msg);
-    if (err.response.status === 401) {
-      //   setTimeout(function () {
-      //     store.dispatch(logoutUser());
-      //   }, 1000);
+
+/* HANDLE AXIOS SUCCESS */
+function handleSuccess(res: any) {
+  if (!isServerDown) {
+    if (
+      res?.status === RESPONSES.SUCCESS ||
+      res?.status === RESPONSES.CREATED
+    ) {
+      res?.data?.message && toast.success(res?.data?.message);
+    } else if (res?.data?.message === "Bad Request") {
+      res?.data?.message && toast.error("Invalid user");
+    } else {
+      res?.data?.message && toast.error(res?.data?.message);
     }
-    return Promise.reject(err);
-  } else if (err.code === "ECONNREFUSED") {
-    // toaster.error('ECONNREFUSED');
-    return "nevermind";
-  } else {
-    // toaster.error(err);
-    return Promise.reject(err);
   }
 }
 
-/**METHOD FOR CALL API */
+/* METHOD FOR POST API */
 export const apiCallPost = (
   url: any,
   data: any,
   params = {},
-  showtoaster = false
+  showtoaster: any,
+  headers = {}
 ) =>
   new Promise((resolve) => {
     axios
-      .post(formatUrl(url, params), data)
-      .then((res) => {
-        // showtoaster && handleSuccess(res);
-        resolve(res.data);
+      .post(formatUrl(url, params), data, {
+        headers: headers,
       })
-      .catch((error: any) => {
-        if (error?.response?.status == 401) {
-          window.location.replace("/");
-          localStorage.clear();
-        }
-        resolve(null);
-      });
-  });
-
-/**METHOD FOR SEND API */
-export const apiCallGet = (url: any, params = {}, showtoaster = false) =>
-  new Promise((resolve) => {
-    axios
-      .get(formatUrl(url, params))
       .then((res) => {
-        // showtoaster && handleSuccess(res);
-        resolve(res.data);
+        showtoaster && handleSuccess(res);
+        resolve(res?.data);
       })
       .catch((error) => {
         resolve(null);
       });
   });
-export const formatUrl = (url: any, params: any) => {
-  params =
-    params && Object.keys(params).length > 0
-      ? `?${new URLSearchParams(params).toString()}`
-      : ``;
-  return `${url}${params}`;
-};
+
+/* METHOD FOR PUT API */
+export const apiCallPut = (
+  url: any,
+  data: any,
+  params = {},
+  showtoaster: any,
+  headers = {}
+) =>
+  new Promise((resolve) => {
+    axios
+      .put(formatUrl(url, params), data, {
+        headers: headers,
+      })
+      .then((res) => {
+        showtoaster && handleSuccess(res);
+        resolve(res?.data);
+      })
+      .catch((error) => {
+        resolve(null);
+      });
+  });
+
+/* METHOD FOR PATCH API */
+export const apiCallPatch = (
+  url: any,
+  data: any,
+  params = {},
+  showtoaster: any,
+  headers = {}
+) =>
+  new Promise((resolve) => {
+    axios
+      .patch(formatUrl(url, params), data, {
+        headers: headers,
+      })
+      .then((res) => {
+        showtoaster && handleSuccess(res);
+        resolve(res?.data);
+      })
+      .catch((error) => {
+        resolve(null);
+      });
+  });
+
+/* METHOD FOR GET API */
+export const apiCallGet = (
+  url: any,
+  params = {},
+  showtoaster = false,
+  headers = {}
+) =>
+  new Promise((resolve) => {
+    axios
+      .get(formatUrl(url, params), {
+        headers: headers,
+      })
+      .then((res) => {
+        showtoaster && handleSuccess(res);
+        resolve(res?.data);
+      })
+      .catch((error) => {
+        resolve(null);
+      });
+  });
+
+/* METHOD FOR DELETE API */
+export const apiCallDelete = (
+  url: any,
+  params = {},
+  showtoaster = false,
+  headers = {}
+) =>
+  new Promise((resolve) => {
+    axios
+      .delete(formatUrl(url, params), {
+        headers: headers,
+      })
+      .then((res) => {
+        showtoaster && handleSuccess(res);
+        resolve(res?.data);
+      })
+      .catch((error) => {
+        resolve(null);
+      });
+  });

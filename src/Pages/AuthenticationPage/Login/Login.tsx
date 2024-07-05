@@ -7,8 +7,13 @@ import {
 } from "../../../Components/UI/Formik/FormikFields";
 import { AuthCard, CustomButton } from "../../../Components/UI";
 import { signIn } from "../../../Api/user.action";
+import { Dispatch } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import { setJwtToken } from "../../../Redux/authenticationData/authenticationData";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const dispatch: Dispatch<any> = useDispatch<any>();
   const navigate = useNavigate();
   const initialValues = {
     email: "",
@@ -28,8 +33,12 @@ const Login = () => {
     };
     const result: any = await signIn(loginDetails);
     if (result?.status === 200) {
+      console.log("result", result);
+      dispatch(setJwtToken(result?.token));
+      toast.success(result?.message);
       navigate("/dashboard");
     } else {
+      toast.error(result?.message);
     }
   };
   return (

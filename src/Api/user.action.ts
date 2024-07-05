@@ -1,5 +1,5 @@
 import store from "../Redux/store";
-import { apiCallPost } from "../Services/axios.service";
+import { apiCallGet, apiCallPost } from "../Services/axios.service";
 import { APIURL } from "../utils/constant";
 
 export const signIn = async (data: any): Promise<any> => {
@@ -46,6 +46,28 @@ export const signUp = async (data: any): Promise<any> => {
       {},
       false
       // headers
+    );
+    return result;
+  } catch (error) {
+    console.log("error register", error);
+    throw error;
+  }
+};
+
+export const dashboardBlog = async (): Promise<any> => {
+  const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
+
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": `${accessToken}`,
+  };
+  console.log('accessToken', accessToken)
+  try {
+    let result: any = await apiCallGet(
+      APIURL["GET_DASHBOARD_BLOG"],
+      {},
+      false,
+      headers
     );
     return result;
   } catch (error) {

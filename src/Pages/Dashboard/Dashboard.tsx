@@ -1,9 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
-import {
-  // BarGraph,
-  // LineGraph,
-  Shimmer,
-} from "../../Components/UI";
+import { Shimmer } from "../../Components/UI";
 import { useEffect, useState } from "react";
 import {
   CostIcon,
@@ -12,6 +8,7 @@ import {
   TxnsIcon,
 } from "../../Assets/Icon/svg/SvgIcons";
 import "./Dashboard.scss";
+import { dashboardBlog } from "../../Api/user.action";
 
 const settingCard = [
   {
@@ -45,6 +42,29 @@ const Dashboard = () => {
       setLoading(false);
     }, 2000);
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dashboardBlog(); // Adjust the API endpoint as necessary
+        // const result = await response.json();
+        console.log('response', response)
+
+        // setData({
+        //   totalRevenue: result.totalRevenue,
+        //   totalCost: result.totalCost,
+        //   totalProfit: result.totalProfit,
+        //   totalTxns: result.totalTxns,
+        // });
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="dashboard">
       <Container>
