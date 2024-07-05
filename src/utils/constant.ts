@@ -8,5 +8,6 @@ interface API_END_POINTS {
 export const APIURL: API_END_POINTS = {
   LOGIN: "/users/signin",
   REGISTER: "/users/signup",
-  GET_DASHBOARD_BLOG: "/blog/getBlogData",
+  GET_DASHBOARD_BLOG: "/blog/getBlogDashboard",
+  
 };
