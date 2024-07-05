@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import {
@@ -6,33 +6,30 @@ import {
   PasswordInput,
 } from "../../../Components/UI/Formik/FormikFields";
 import { AuthCard, CustomButton } from "../../../Components/UI";
-import { apiCallPost } from "../../../ApiService/axios.service";
-import { APIURL } from "../../../utils/constant";
-import { jwtDecode } from "jwt-decode";
+import { Register } from "../../../Api/user.action";
 
 const Login = () => {
   const navigate = useNavigate();
   const initialValues = {
-    mail: "",
+    email: "",
     password: "",
   };
 
   const validationSchema = Yup.object({
-    mail: Yup.string()
-      .email("Please enter a right Email Address")
-      .required("Please enter email address"),
-    password: Yup.string().required("Please enter password"),
+    email: Yup.string()
+      .email("Please Enter Valid Email Address")
+      .required("Please Enter Email Address"),
+    password: Yup.string().required("Please Enter Password"),
   });
   const onSubmit = async (values: any) => {
-    const { token, status }: any = await apiCallPost(APIURL["LOGIN"], {
-      email: values.mail,
+    const loginDetails: any = {
+      email: values.email,
       password: values.password,
-    });
-    if (status == 200) {
-      localStorage.setItem("token", token);
-      const { email }: { email: string } = jwtDecode(token);
-      localStorage.setItem("email", email);
+    };
+    const result: any = await Register(loginDetails);
+    if (result?.status === 200) {
       navigate("/dashboard");
+    } else {
     }
   };
   return (
@@ -50,13 +47,13 @@ const Login = () => {
           <Form>
             <Input
               label="Email"
-              placeholder="Eg”Admin123@gmail.com”"
+              placeholder="Admin@gmail.com"
               type="email"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.mail}
+              value={formik.values.email}
               formik={formik}
-              name="mail"
+              name="email"
             />
             <PasswordInput
               label="Password"

@@ -4,7 +4,7 @@ import bnb from "../../Assets/Icon/bnb.svg";
 import btc from "../../Assets/Icon/btc.svg";
 import "./History.scss";
 import { CopyIcon } from "../../Assets/Icon/svg/SvgIcons";
-import { apiCallPost } from "../../ApiService/axios.service";
+import { apiCallPost } from "../../Services/axios.service";
 import { APIURL } from "../../utils/constant";
 import { useEffect, useState } from "react";
 
@@ -116,32 +116,32 @@ const History = () => {
   ];
 
   useEffect(() => {
-    fetchTrnxHistory();
+    // fetchTrnxHistory();
     return () => clearTimeout(timeout);
   }, []);
 
-  const fetchTrnxHistory = async (page?: number) => {
-    try {
-      setLoading(true);
-      const response: any = await apiCallPost(
-        APIURL["TRNX_HISTORY"],
-        {},
-        { limit: 10, page: page ? page : 1 }
-      );
-      if (response?.status == 200) {
-        setTotalTransaction(response?.count);
-        setTransaction(response?.updatedInfoArray);
-        timeout = setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      }
-    } catch (error) {
-      console.log("erorr", error);
-    }
-  };
+  // const fetchTrnxHistory = async (page?: number) => {
+  //   try {
+  //     setLoading(true);
+  //     const response: any = await apiCallPost(
+  //       APIURL["TRNX_HISTORY"],
+  //       {},
+  //       { limit: 10, page: page ? page : 1 }
+  //     );
+  //     if (response?.status == 200) {
+  //       setTotalTransaction(response?.count);
+  //       setTransaction(response?.updatedInfoArray);
+  //       timeout = setTimeout(() => {
+  //         setLoading(false);
+  //       }, 1000);
+  //     }
+  //   } catch (error) {
+  //     console.log("erorr", error);
+  //   }
+  // };
 
   const handlePageChange = async (pageNumber: number) => {
-    await fetchTrnxHistory(pageNumber);
+    // await fetchTrnxHistory(pageNumber);
     setPageNumber(pageNumber);
   };
 
