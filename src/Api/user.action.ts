@@ -3,12 +3,6 @@ import { apiCallGet, apiCallPost } from "../Services/axios.service";
 import { APIURL } from "../utils/constant";
 
 export const signIn = async (data: any): Promise<any> => {
-  // const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
-
-  // const headers = {
-  //   "Content-Type": "application/json",
-  //   "x-auth-token": `${accessToken}`,
-  // };
   const { email, password } = data;
   try {
     let result: any = await apiCallPost(
@@ -19,7 +13,6 @@ export const signIn = async (data: any): Promise<any> => {
       },
       {},
       false
-      // headers
     );
     return result;
   } catch (error) {
@@ -28,12 +21,6 @@ export const signIn = async (data: any): Promise<any> => {
   }
 };
 export const signUp = async (data: any): Promise<any> => {
-  // const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
-
-  // const headers = {
-  //   "Content-Type": "application/json",
-  //   "x-auth-token": `${accessToken}`,
-  // };
   const { email, password, username } = data;
   try {
     let result: any = await apiCallPost(
@@ -45,7 +32,6 @@ export const signUp = async (data: any): Promise<any> => {
       },
       {},
       false
-      // headers
     );
     return result;
   } catch (error) {
@@ -59,9 +45,8 @@ export const dashboardBlog = async (): Promise<any> => {
 
   const headers = {
     "Content-Type": "application/json",
-    "Authorization": `${accessToken}`,
+    Authorization: `${accessToken}`,
   };
-  console.log('accessToken', accessToken)
   try {
     let result: any = await apiCallGet(
       APIURL["GET_DASHBOARD_BLOG"],
@@ -81,12 +66,40 @@ export const userSpecifiedBlog = async (): Promise<any> => {
 
   const headers = {
     "Content-Type": "application/json",
-    "Authorization": `${accessToken}`,
+    Authorization: `${accessToken}`,
   };
-  console.log('accessToken', accessToken)
+  console.log("accessToken", accessToken);
   try {
     let result: any = await apiCallGet(
       APIURL["GET_USER_SPECIFIED_BLOG"],
+      {},
+      false,
+      headers
+    );
+    return result;
+  } catch (error) {
+    console.log("error register", error);
+    throw error;
+  }
+};
+
+export const createBlog = async (data: any): Promise<any> => {
+  const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `${accessToken}`,
+  };
+  console.log('accessToken', accessToken)
+  const { title, description } = data;
+
+  try {
+    let result: any = await apiCallPost(
+      APIURL["CREATE_BLOG"],
+      {
+        title: title,
+        description: description,
+      },
       {},
       false,
       headers

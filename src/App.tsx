@@ -6,6 +6,7 @@ import { AuthLayout, Dashboard, History, Login } from "./Pages";
 import { Loader } from "./Components/UI";
 import Register from "./Pages/AuthenticationPage/Register/Register";
 import MyBlog from "./Pages/MyBlog/MyBlog";
+import Blog from "./Pages/CreateBlog/CreateBlog";
 
 const router = createBrowserRouter([
   {
@@ -40,8 +41,8 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "/history",
-        element: <History />,
+        path: "/createBlog",
+        element: <Blog />,
       },
       {
         path: "/myBlog",

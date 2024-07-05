@@ -12,6 +12,6 @@ const Login = lazy(() => import("./AuthenticationPage/Login/Login"));
 
 // private pages
 const Dashboard = lazy(() => import("./Dashboard/Dashboard"));
-const History = lazy(() => import("./History/History"));
+const History = lazy(() => import("./CreateBlog/CreateBlog"));
 
 export { AuthLayout, Login, Dashboard, History };

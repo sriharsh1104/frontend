@@ -5,11 +5,16 @@ interface API_END_POINTS {
   REGISTER: string;
   GET_DASHBOARD_BLOG: string;
   GET_USER_SPECIFIED_BLOG: string;
+  CREATE_BLOG: string;
+
 
 }
 export const APIURL: API_END_POINTS = {
   LOGIN: "/users/signin",
   REGISTER: "/users/signup",
   GET_DASHBOARD_BLOG: "/blog/getBlogDashboard",
-  GET_USER_SPECIFIED_BLOG:"/blog/getBlogData"
+  GET_USER_SPECIFIED_BLOG:"/blog/getBlogData",
+  CREATE_BLOG:"/blog/createBlog",
+
+
 };

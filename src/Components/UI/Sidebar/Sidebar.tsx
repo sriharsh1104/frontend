@@ -25,8 +25,8 @@ const Sidebar = (props: propTypes) => {
     },
     {
       icon: <HistoryIcon />,
-      text: "History",
-      link: "/history",
+      text: "CreateBlog",
+      link: "/createBlog",
     },
     {
       icon: <DashboardIcon />,
