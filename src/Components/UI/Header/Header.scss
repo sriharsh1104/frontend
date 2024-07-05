@@ -1,0 +1,60 @@
+@import "../../../Assets/Theme/_var.scss";
+
+.header {
+  padding: 1.2rem 3rem;
+  background: $white;
+  position: sticky;
+  z-index: 11;
+  top: 0;
+  min-height: 9rem;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 1439px) {
+    min-height: 7.64rem;
+  }
+
+  @media (max-width: 1199px) {
+    padding: 1rem 1.5rem;
+  }
+
+  &__inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h5 {
+      font-weight: 700;
+
+      @media (max-width: 767px) {
+        display: none;
+      }
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+
+      @media (max-width: 1199px) {
+        gap: 1.5rem;
+      }
+      @media (max-width: 767px) {
+        gap: 1rem;
+      }
+
+      .user-info {
+        @media (max-width: 767px) {
+          display: none;
+        }
+      }
+    }
+
+    .header-logo {
+      @media (max-width: 1199px) {
+        max-width: 6rem;
+      }
+    }
+  }
+}

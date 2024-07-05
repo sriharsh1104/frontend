@@ -1,0 +1,151 @@
+@import "../../../Assets/Theme/_var.scss";
+
+.custom-table {
+  &__wrap {
+    background-color: $white;
+    border-radius: 1rem;
+  }
+  &__table {
+    &.table {
+      --bs-table-bg: transparent;
+      white-space: nowrap;
+      margin-bottom: 0;
+
+      thead {
+        border: none;
+
+        tr {
+          th {
+            padding: 1.9rem 3rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: $black;
+            border-color: rgba($black, 0.1);
+
+            @media (max-width: 1679px) {
+              padding: 1.5rem 2rem;
+              font-size: 1.4rem;
+            }
+            @media (max-width: 575px) {
+              font-size: 1.2rem;
+            }
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          &:not(:last-child) {
+            border-bottom: 0.1rem solid rgba($black, 0.1);
+          }
+        }
+        td {
+          white-space: nowrap;
+          padding: 1.2rem 3rem;
+          font-size: 1.4rem;
+          font-weight: 600;
+          vertical-align: middle;
+          border-bottom: 0;
+          min-width: 10rem;
+          color: $secondary4;
+
+          @media (max-width: 1679px) {
+            padding: 1.1rem 2rem;
+          }
+
+          @media (max-width: 1368px) {
+            padding: 1rem 2rem;
+            font-size: 1.3rem;
+          }
+          @media (max-width: 575px) {
+            font-size: 1.2rem;
+          }
+
+          // status classes
+
+          &.completed {
+            color: #59ac0f;
+          }
+          &.pending {
+            color: #fde076;
+          }
+          &.cancel {
+            color: #c3292d;
+          }
+        }
+
+        tr {
+          &.no_record {
+            td {
+              padding: 1.5rem 0;
+              .no_record_box {
+                border-radius: 1.6rem;
+                padding: 6rem 2rem;
+                background: $gradient2;
+
+                h4 {
+                  font-size: 2rem;
+                  font-weight: 400;
+                  margin-top: 1.5rem;
+
+                  @media (max-width: 1368px) {
+                    font-size: 1.6rem;
+                  }
+                }
+                @media (max-width: 991px) {
+                  padding: 4rem 2rem;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .token-icon {
+        display: inline-table;
+        margin-right: 0.55rem;
+
+        @media (max-width: 1439px) {
+          margin-right: 0.35rem;
+        }
+
+        img {
+          width: 2.7rem;
+          height: 2.7rem;
+          @media (max-width: 1439px) {
+            width: 2.2rem;
+            height: 2.2rem;
+          }
+        }
+      }
+    }
+  }
+
+  &__pagination {
+    padding-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: 767px) {
+      padding-top: 1.5rem;
+      gap: 1.5rem;
+    }
+  }
+}
+
+.common_table {
+  color: transparent;
+}
+
+.copy-btn {
+  top: -2.5px;
+  position: relative;
+  margin-left: 0.5rem;
+
+  &:hover {
+    svg path {
+      fill: $black;
+    }
+  }
+}

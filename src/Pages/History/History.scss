@@ -1,0 +1,23 @@
+@import "../../Assets/Theme/_var.scss";
+
+.history {
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h5 {
+      font-weight: 700;
+    }
+
+    .common-select {
+      .react-select {
+        &__control {
+          background: $white;
+          min-width: 9.7rem;
+        }
+      }
+    }
+  }
+}

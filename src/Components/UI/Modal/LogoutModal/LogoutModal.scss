@@ -1,0 +1,39 @@
+@import "../../../../Assets/Theme/_var.scss";
+
+.logout-modal {
+  p {
+    font-weight: 600;
+    color: $secondary5;
+    margin-bottom: 4.4rem;
+
+    @media (max-width: 1679px) {
+      margin-bottom: 3rem;
+    }
+  }
+  &__btns {
+    display: flex;
+    gap: 2rem;
+
+    @media (max-width: 1679px) {
+      gap: 1.5rem;
+    }
+    @media (max-width: 767px) {
+      gap: 1rem;
+    }
+
+    .custom-button {
+      flex: 1;
+      padding: 1.45rem;
+      font-size: 1.6rem;
+
+      @media (max-width: 1679px) {
+        padding: 1.2rem;
+        font-size: 1.4rem;
+      }
+      @media (max-width: 767px) {
+        padding: 1rem;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+@import "../../../Assets/Theme/_var.scss";
+.rc-pagination {
+  &.custom-pagination {
+    .rc-pagination-item,
+    .rc-pagination-prev,
+    .rc-pagination-next {
+      margin: 0 0.5rem;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 1rem;
+      background: $white;
+      backdrop-filter: blur(15px);
+      border: 0.1rem solid $borderClr;
+      color: $secondary4 !important;
+      font-size: 1.5rem;
+      letter-spacing: -0.18px;
+      @media (max-width: 1679px) {
+        width: 3.6rem;
+        height: 3.6rem;
+        font-size: 1.3rem;
+      }
+      @media (max-width: 767px) {
+        font-size: 1.2rem;
+        width: 3.2rem;
+        height: 3.2rem;
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+
+      &:hover {
+        background: rgba(33, 33, 34, 0.025);
+        a {
+          color: $secondary4;
+        }
+      }
+
+      @media (max-width: 1679px) {
+        margin: 0 0.5rem;
+      }
+
+      &-active {
+        background: $primary !important;
+        color: $white !important;
+
+        a {
+          color: $white !important;
+        }
+      }
+    }
+
+    .rc-pagination-disabled {
+      opacity: 0.8;
+    }
+
+    .rc-pagination-prev > .rc-pagination-item-link,
+    .rc-pagination-next > .rc-pagination-item-link {
+      background: transparent;
+      border: 0;
+    }
+
+    .rc-pagination-jump-next,
+    .rc-pagination-jump-prev {
+      margin: 0;
+
+      .rc-pagination-item-link {
+        color: $secondary4;
+        font-weight: 400;
+        background: transparent;
+      }
+    }
+  }
+}

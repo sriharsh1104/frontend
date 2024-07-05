@@ -1,0 +1,100 @@
+@import "../../../../Assets/Theme/_var.scss";
+
+.dp-style {
+  .react-datepicker {
+    font-family: $baseFont;
+    font-size: 1.6rem;
+    border-color: $borderClr2;
+
+    &__calendar-icon {
+      cursor: pointer;
+      width: auto;
+      height: auto;
+      padding: 0;
+      top: 50%;
+      right: 2rem;
+      transform: translateY(-50%);
+    }
+
+    &__month-container,
+    &__header {
+      background-color: $secondary5;
+    }
+
+    &__current-month,
+    &-time__header,
+    &-year-header {
+      color: $white;
+      font-weight: 500;
+      font-size: 1.8rem;
+    }
+
+    &__day-name,
+    &__day,
+    &__time-name {
+      color: $white;
+      width: 3.5rem;
+      line-height: 3.2rem;
+      margin: 0.25rem;
+    }
+
+    &__day-names {
+      padding-top: 0.8rem;
+    }
+    &__day-name {
+      font-weight: 600;
+    }
+
+    &__header {
+      border-bottom-color: rgba($white, 0.25);
+    }
+
+    &__day--selected,
+    &__day--in-selecting-range,
+    &__day--in-range,
+    &__month-text--selected,
+    &__month-text--in-selecting-range,
+    &__month-text--in-range,
+    &__quarter-text--selected,
+    &__quarter-text--in-selecting-range,
+    &__quarter-text--in-range,
+    &__year-text--selected,
+    &__year-text--in-selecting-range,
+    &__year-text--in-range {
+      background-color: $primary;
+    }
+
+    &__day:hover,
+    &__month-text:hover,
+    &__quarter-text:hover,
+    &__year-text:hover {
+      background-color: $primary;
+    }
+
+    &__day--keyboard-selected,
+    &__month-text--keyboard-selected,
+    &__quarter-text--keyboard-selected,
+    &__year-text--keyboard-selected {
+      background-color: rgba($primary, 0.5);
+    }
+
+    &__day--today,
+    &__month-text--today,
+    &__quarter-text--today,
+    &__year-text--today {
+      border-radius: 0.3rem;
+      background-color: rgba($white, 0.075);
+      color: $white;
+      font-weight: 700;
+    }
+
+    &-popper[data-placement^="bottom"] .react-datepicker__triangle::before,
+    &-popper[data-placement^="bottom"] .react-datepicker__triangle::after {
+      border-bottom-color: $secondary5;
+    }
+
+    &__navigation {
+      top: 1.2rem;
+    }
+  }
+}

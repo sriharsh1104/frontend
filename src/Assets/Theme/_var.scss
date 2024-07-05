@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+
+$baseFont: "Nunito", sans-serif;
+
+$white: #ffffff;
+$lightBlue: rgb(#000000, 0.05);
+$lightGray: rgb(241, 241, 241);
+$lightGray2: rgb(245, 245, 245);
+$black: #000000;
+$primary: #000000;
+
+$secondary2: rgba(34, 34, 34, 1);
+$secondary3: #a3a3a3;
+$secondary4: rgb(114, 114, 114);
+$secondary5: rgba(46, 46, 46, 1);
+$borderClr: rgba(228, 228, 228, 1);
+$borderClr2: #252525;
+
+$green: #7bbb3f;
+$blue: #2797d1;
+$red: #c3292d;
+$orange: #f68630;
+$skyblue: #01cde4;
+$yellowdark: #fbbb10;
+$reddark: #e54c40;
+
+$gradient2: linear-gradient(
+  180deg,
+  #fdfdfd 33.45%,
+  rgba(255, 255, 255, 0.79) 119.09%
+);
+
+$boxShadow: 0 1.2rem 1.6rem -0.4rem rgba(255, 255, 255, 0.2),
+  0 0.4rem 0.6rem -0.2rem rgba(255, 255, 255, 0.15);
+$boxShadow2: 0 1rem 1.4rem rgba(255, 255, 255, 0.06);
+$boxShadow3: inset 3px 17px 37px rgba(3, 3, 3, 0.6),
+  inset 0px 0px 5px rgba(255, 255, 255, 0.1);
+
+// z indexes
+$header: 988;
+$sidebar: $header + 3;
+$sidebar_overlay: $sidebar - 2;
+$modal: 1056;
+$loader: 1090;

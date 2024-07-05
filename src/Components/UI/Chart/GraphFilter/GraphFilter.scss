@@ -1,0 +1,23 @@
+@import "../../../../Assets/Theme/_var.scss";
+
+.graph-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  h5 {
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+
+  .common-select {
+    .react-select {
+      &__control {
+        background-color: $white;
+        min-width: 9.6rem;
+        padding: 0.5rem 1.5rem;
+      }
+    }
+  }
+}

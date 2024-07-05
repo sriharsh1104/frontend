@@ -1,0 +1,67 @@
+@import "../../../Assets/Theme/_var.scss";
+
+.connect-wallet {
+  position: relative;
+
+  &__btn {
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 2.4rem;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.wallet-list {
+  background-color: #fff;
+  color: black;
+  border-radius: 0.4rem;
+  position: absolute;
+  top: 50px;
+  right: -450px;
+  min-width: 35rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all linear 0.3s;
+
+  &__show {
+    right: 0;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    border-bottom: 0.1rem solid red;
+
+    h4 {
+      white-space: nowrap;
+    }
+
+    button {
+      margin-left: 2rem;
+    }
+  }
+
+  &__body {
+    padding: 2rem;
+
+    ul {
+      li {
+        &:not(:last-child) {
+          margin-bottom: 1.5rem;
+        }
+      }
+    }
+  }
+
+  &__button {
+    border-radius: 1.2rem;
+    padding: 1rem 2rem;
+    width: 100%;
+    text-align: start;
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}

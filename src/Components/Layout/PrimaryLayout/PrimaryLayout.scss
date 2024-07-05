@@ -1,0 +1,25 @@
+@import "../../../Assets/Theme/_var.scss";
+
+.primary-layout {
+  &__inner {
+    min-height: 100vh;
+    margin-left: 35rem;
+
+    @media (max-width: 1679px) {
+      margin-left: 32rem;
+    }
+    @media (max-width: 1439px) {
+      margin-left: 28rem;
+    }
+    @media (max-width: 1199px) {
+      margin-left: 0;
+    }
+  }
+  &__wrapper {
+    padding: 2rem 0;
+
+    @media (max-width: 1199px) {
+      padding: 1.5rem 0;
+    }
+  }
+}

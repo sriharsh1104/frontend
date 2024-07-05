@@ -1,0 +1,55 @@
+@import "../../../../Assets/Theme/_var.scss";
+
+.auth-card {
+  padding: 5.2rem 4.5rem;
+  border-radius: 2rem;
+  width: 100%;
+  max-width: 53.2rem;
+  background-color: $white;
+
+  @media (max-width: 1679px) {
+    max-width: 45rem;
+    padding: 4.5rem 3.5rem;
+  }
+
+  @media (max-width: 767px) {
+    padding: 3rem 2rem;
+  }
+
+  &__logo {
+    margin-bottom: 3.4rem;
+
+    @media (max-width: 1679px) {
+      margin-bottom: 2.4rem;
+    }
+    @media (max-width: 767px) {
+      margin-bottom: 2rem;
+    }
+
+    img {
+      max-width: 12rem;
+
+      @media (max-width: 767px) {
+        max-width: 8rem;
+      }
+    }
+  }
+
+  &__head {
+    margin-bottom: 3.5rem;
+    @media (max-width: 1679px) {
+      margin-bottom: 2.4rem;
+    }
+    @media (max-width: 767px) {
+      margin-bottom: 2rem;
+    }
+    h3 {
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-weight: 500;
+      color: $secondary4;
+    }
+  }
+}

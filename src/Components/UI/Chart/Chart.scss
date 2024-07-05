@@ -1,0 +1,18 @@
+@import "../../../Assets/Theme/_var.scss";
+.chart-graph {
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  padding: 2rem 2.5rem;
+  border-radius: 2rem;
+  height: 100%;
+
+  @media (max-width: 767px) {
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+  }
+
+  &__graph {
+    height: 28.5rem;
+  }
+}

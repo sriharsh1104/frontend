@@ -1,0 +1,109 @@
+@import "../../../../Assets/Theme/_var.scss";
+
+.common-select {
+  .react-select {
+    &__control {
+      padding: 0.9rem 1.5rem;
+      border: 0.1rem solid $borderClr;
+      background: $lightGray2;
+      min-height: fit-content;
+      border-radius: 1rem;
+      min-width: 12.8rem;
+      // transition: all linear 0.25s;
+
+      @media (max-width: 767px) {
+        padding: 0.75rem 1.25rem;
+        min-width: 9rem;
+      }
+
+      &--is-focused {
+        box-shadow: none;
+      }
+
+      &:hover {
+        border-color: $borderClr;
+      }
+
+      &--menu-is-open {
+        .react-select__indicator {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    &__input-container,
+    &__placeholder,
+    &__single-value {
+      margin: 0;
+      color: $secondary4;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: capitalize;
+      margin-right: 0.6rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      @media (max-width: 767px) {
+        font-size: 1.2rem;
+      }
+    }
+
+    &__value-container,
+    &__indicator {
+      padding: 0;
+    }
+
+    &__indicator-separator {
+      display: none;
+    }
+
+    &__indicator {
+      background-image: url(../../../../Assets/Icon/down_icon.svg);
+      background-repeat: no-repeat;
+      background-size: 100%;
+      width: 0.95rem;
+      height: 0.55rem;
+      svg {
+        display: none;
+      }
+    }
+
+    &__menu {
+      z-index: 3;
+      border-radius: 0.9rem;
+      background: $lightGray2;
+      margin-top: 0;
+    }
+
+    &__option {
+      padding: 0.75rem 1.5rem;
+      color: $secondary4;
+      font-size: 1.4rem;
+      font-weight: 400;
+
+      text-transform: capitalize;
+      &:not(:last-child) {
+        border-bottom: 0.1rem solid $borderClr;
+      }
+
+      @media (max-width: 767px) {
+        padding: 1.2rem;
+        font-size: 1.2rem;
+      }
+
+      &--is-selected,
+      &:active {
+        background-color: $primary !important;
+        color: $white !important;
+      }
+
+      &--is-focused {
+        background-color: transparent;
+      }
+      &:hover {
+        background-color: rgba($primary, 0.05);
+      }
+    }
+  }
+}
