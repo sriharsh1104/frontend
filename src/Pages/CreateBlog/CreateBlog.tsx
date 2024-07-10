@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
 
@@ -8,7 +7,6 @@ import { AuthCard, CustomButton } from "../../Components/UI";
 import { Input } from "../../Components/UI/Formik/FormikFields";
 
 const MyBlog = () => {
-  const navigate = useNavigate();
   const initialValues = {
     title: "",
     description: "",
@@ -16,8 +14,8 @@ const MyBlog = () => {
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Title Is Required"),
-    description: Yup.string().required("Please Enter description"),
-  });
+    description: Yup.string().required("Please Enter Description"),
+  }); 
   const onSubmit = async (values: any) => {
     const blogDetails: any = {
       title: values?.title,
@@ -31,7 +29,7 @@ const MyBlog = () => {
       toast.error(result?.message);
     }
   };
-  
+
   return (
     <AuthCard
       isLogo
@@ -68,16 +66,6 @@ const MyBlog = () => {
             <CustomButton
               text="Create Blog"
               className="w-100"
-              disabled={!formik?.isValid}
-            />
-            <CustomButton
-              text="Delete Blog"
-              // className="w-100"
-              disabled={!formik?.isValid}
-            />
-            <CustomButton
-              text="Edit Blog"
-              // className="w-100"
               disabled={!formik?.isValid}
             />
           </Form>

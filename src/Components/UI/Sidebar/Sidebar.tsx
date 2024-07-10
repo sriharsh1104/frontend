@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   DashboardIcon,
   HistoryIcon,
@@ -11,6 +11,8 @@ import LogoutModal from "../Modal/LogoutModal/LogoutModal";
 import CustomButton from "../CustomButton/CustomButton";
 import UserInfo from "../UserInfo/UserInfo";
 import "./Sidebar.scss";
+import { logout } from "../../../Api/user.action";
+import toast from "react-hot-toast";
 
 type propTypes = {
   active?: boolean;
@@ -34,10 +36,21 @@ const Sidebar = (props: propTypes) => {
       link: "/myBlog",
     },
   ];
+  const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const logoutUser = async () => {
+    const result: any = await logout();
+    if (result?.status === 200) {
+      console.log("result", result);
+      navigate("/");
+      toast.success(result?.message);
+    } else {
+      toast.error(result?.message);
+    }
+  };
 
   return (
     <>
@@ -96,7 +109,7 @@ const Sidebar = (props: propTypes) => {
           <div className="sidebar__inner__bottom">
             <UserInfo className="d-md-none" />
             <CustomButton
-              onClick={handleShow}
+              onClick={logoutUser}
               className="secondary-btn"
               icon={<LogoutIcon />}
               text="Logout"

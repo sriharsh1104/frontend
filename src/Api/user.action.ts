@@ -68,7 +68,6 @@ export const userSpecifiedBlog = async (): Promise<any> => {
     "Content-Type": "application/json",
     Authorization: `${accessToken}`,
   };
-  console.log("accessToken", accessToken);
   try {
     let result: any = await apiCallGet(
       APIURL["GET_USER_SPECIFIED_BLOG"],
@@ -90,7 +89,6 @@ export const createBlog = async (data: any): Promise<any> => {
     "Content-Type": "application/json",
     Authorization: `${accessToken}`,
   };
-  console.log("accessToken", accessToken);
   const { title, description } = data;
 
   try {
@@ -118,7 +116,6 @@ export const deleteBlog = async (data: any): Promise<any> => {
     "Content-Type": "application/json",
     Authorization: `${accessToken}`,
   };
-  console.log("accessToken", accessToken);
   const { id } = data;
 
   try {
@@ -145,7 +142,6 @@ export const updateBlog = async (data: any): Promise<any> => {
     "Content-Type": "application/json",
     Authorization: `${accessToken}`,
   };
-  console.log("accessToken", accessToken);
   const { title, description } = data;
 
   try {
@@ -155,6 +151,29 @@ export const updateBlog = async (data: any): Promise<any> => {
         title: title,
         description: description,
       },
+      {},
+      false,
+      headers
+    );
+    return result;
+  } catch (error) {
+    console.log("error register", error);
+    throw error;
+  }
+};
+
+export const logout = async (): Promise<any> => {
+  const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `${accessToken}`,
+  };
+
+  try {
+    let result: any = await apiCallPost(
+      APIURL["LOGOUT"],
+      {},
       {},
       false,
       headers
