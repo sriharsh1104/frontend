@@ -9,12 +9,13 @@ import {
 } from "../../Assets/Icon/svg/SvgIcons";
 import "./Dashboard.scss";
 import { dashboardBlog } from "../../Api/user.action";
+// import DashboardModal from "./DashboardModal/DashboardModal";
 
 const settingCard = [
   {
     icon: <RevenueIcon />,
     title: "Total Revenue",
-    amount: "$30,000",
+    description: "no body can challange jain don words",
   },
 
   {
@@ -35,6 +36,9 @@ const settingCard = [
 ];
 
 const Dashboard = () => {
+  // const [showModal, setShowModal] = useState(false);
+  const [data,setData]= useState<any>();
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +49,9 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dashboardBlog(); // Adjust the API endpoint as necessary
+        const response = await dashboardBlog();
+        console.log('response', response.data) // Adjust the API endpoint as necessary
+      setData(response?.data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {
@@ -62,16 +68,15 @@ const Dashboard = () => {
         <div className="dashboard__top">
           <h5>Dashboard</h5>
           <Row>
-            {settingCard.map((item, index) => (
+            {data?.map((item:any, index:any) => (
               <Col md={3} xs={6} key={index}>
                 <div className="dashboard-card">
-                  <span className="dashboard-card__icon">{item.icon}</span>
                   <h6>{item.title}</h6>
                   <h5 className="text-truncate">
                     {loading ? (
                       <Shimmer height={"20px"} width="150px" />
                     ) : (
-                      `${item.amount}`
+                      `${item.description}`
                     )}
                   </h5>
                 </div>
@@ -79,16 +84,7 @@ const Dashboard = () => {
             ))}
           </Row>
         </div>
-        {/* <div className="dashboard__bottom">
-          <Row>
-            <Col md={6}>
-              <BarGraph />
-            </Col>
-            <Col md={6}>
-              <LineGraph />
-            </Col>
-          </Row>
-        </div> */}
+        
       </Container>
     </div>
   );

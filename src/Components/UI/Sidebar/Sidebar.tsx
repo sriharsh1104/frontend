@@ -41,6 +41,7 @@ const Sidebar = (props: propTypes) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  
   const logoutUser = async () => {
     const result: any = await logout();
     if (result?.status === 200) {

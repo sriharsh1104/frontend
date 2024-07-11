@@ -42,6 +42,7 @@ export const signUp = async (data: any): Promise<any> => {
 
 export const dashboardBlog = async (): Promise<any> => {
   const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
+  console.log('accessToken', accessToken)
 
   const headers = {
     "Content-Type": "application/json",
