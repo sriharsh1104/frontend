@@ -1,41 +1,15 @@
 import { Col, Container, Row } from "react-bootstrap";
-import { Shimmer } from "../../Components/UI";
+import { CustomButton, Shimmer } from "../../Components/UI";
 import { useEffect, useState } from "react";
-import {
-  CostIcon,
-  ProfitIcon,
-  RevenueIcon,
-  TxnsIcon,
-} from "../../Assets/Icon/svg/SvgIcons";
 import "./Dashboard.scss";
-import { dashboardBlog, userSpecifiedBlog } from "../../Api/user.action";
-
-const settingCard = [
-  {
-    icon: <RevenueIcon />,
-    title: "Total Revenue",
-    amount: "$30,000",
-  },
-
-  {
-    icon: <CostIcon />,
-    title: "Total Cost",
-    amount: "$30,000",
-  },
-  {
-    icon: <ProfitIcon />,
-    title: "Total Profit",
-    amount: "$30,000",
-  },
-  {
-    icon: <TxnsIcon />,
-    title: "Total Txns",
-    amount: "$30,000",
-  },
-];
+import { deleteBlog, userSpecifiedBlog } from "../../Api/user.action";
+import DeleteModal from "./DeleteModal/DeletModal";
 
 const MyBlog = () => {
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBlogId, setSelectedBlogId] = useState<any>();
 
   useEffect(() => {
     setTimeout(() => {
@@ -45,7 +19,8 @@ const MyBlog = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await userSpecifiedBlog(); // Adjust the API endpoint as necessary
+        const response = await userSpecifiedBlog();
+        setData(response?.data); // Adjust the API endpoint as necessary
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {
@@ -56,40 +31,63 @@ const MyBlog = () => {
     fetchData();
   }, []);
 
+  const handleConfirmDelete = async () => {
+    const blogId: any = {
+      id: data[0]._id,
+    };
+    console.log("data", data[0]._id);
+    try {
+      const response = await deleteBlog(blogId);
+      console.log("response", response); // Adjust the API endpoint as necessary
+    } catch (error) {
+      console.error("Error deleting dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleDeleteClick = (id: any) => {
+    setSelectedBlogId(id);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedBlogId(null);
+  };
+
   return (
     <div className="dashboard">
       <Container>
         <div className="dashboard__top">
-          <h5>Dashboard</h5>
+          <h5>My Blog</h5>
           <Row>
-            {settingCard.map((item, index) => (
+            {data?.map((item: any, index: any) => (
               <Col md={3} xs={6} key={index}>
                 <div className="dashboard-card">
-                  <span className="dashboard-card__icon">{item.icon}</span>
-                  <h6>{item.title}</h6>
-                  <h5 className="text-truncate">
+                  <h6>{item?.title}</h6>
+                  <h5>
                     {loading ? (
                       <Shimmer height={"20px"} width="150px" />
                     ) : (
-                      `${item.amount}`
+                      `${item?.description}`
                     )}
+                    <CustomButton
+                      text="Delete"
+                      className="w-100"
+                      onClick={() => handleDeleteClick(item?._id)}
+                    />
                   </h5>
                 </div>
               </Col>
             ))}
           </Row>
         </div>
-        {/* <div className="dashboard__bottom">
-          <Row>
-            <Col md={6}>
-              <BarGraph />
-            </Col>
-            <Col md={6}>
-              <LineGraph />
-            </Col>
-          </Row>
-        </div> */}
       </Container>
+      <DeleteModal
+        show={showModal}
+        onHide={handleCloseModal}
+        onDelete={handleConfirmDelete}
+      />
     </div>
   );
 };

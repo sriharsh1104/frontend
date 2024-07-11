@@ -164,13 +164,15 @@ export const apiCallGet = (
 /* METHOD FOR DELETE API */
 export const apiCallDelete = (
   url: any,
+  data: any,
   params = {},
-  showtoaster = false,
+  showtoaster: any,
   headers = {}
 ) =>
   new Promise((resolve) => {
     axios
       .delete(formatUrl(url, params), {
+        data: data,
         headers: headers,
       })
       .then((res) => {

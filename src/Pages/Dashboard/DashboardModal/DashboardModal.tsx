@@ -1,5 +1,5 @@
 // BlogModal.jsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { dashboardBlog } from "../../../Api/user.action";
 import toast from "react-hot-toast";

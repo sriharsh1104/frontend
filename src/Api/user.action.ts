@@ -1,5 +1,5 @@
 import store from "../Redux/store";
-import { apiCallGet, apiCallPost } from "../Services/axios.service";
+import { apiCallDelete, apiCallGet, apiCallPost } from "../Services/axios.service";
 import { APIURL } from "../utils/constant";
 
 export const signIn = async (data: any): Promise<any> => {
@@ -120,7 +120,7 @@ export const deleteBlog = async (data: any): Promise<any> => {
   const { id } = data;
 
   try {
-    let result: any = await apiCallPost(
+    let result: any = await apiCallDelete(
       APIURL["DELETE_BLOG"],
       {
         id: id,
