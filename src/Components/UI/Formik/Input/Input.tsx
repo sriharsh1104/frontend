@@ -17,8 +17,11 @@ const Input = (props: {
   onBlur?: any;
   value?: any;
   inputClass?: string;
+  row?: boolean;
+  isTextArea?: boolean; // Add a new prop to specify if the input is a textarea
+  rows?: number; 
 }) => {
-  const { ...rest } = props;
+  const { row,isTextArea,rows,...rest } = props;
 
   return (
     <>
@@ -35,6 +38,8 @@ const Input = (props: {
         {props.label && <Label htmlFor={props.name} label={props.label} />}
         <div className="inner">
           <Field
+          as={isTextArea ? "textarea" : "input"} // Conditionally render as textarea
+          rows={isTextArea ? rows : undefined} // Apply rows if it's a textarea
             onChange={props.onChange}
             name={props.name}
             {...rest}

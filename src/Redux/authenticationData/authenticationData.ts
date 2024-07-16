@@ -11,18 +11,15 @@ export const authenticationDataSlice = createSlice({
   name: "authenticationData",
   initialState,
   reducers: {
-    resetAuthenticationDataSlice: () => initialState,
+    resetAuthenticationDataSlice: ( ) => initialState,
 
     setJwtToken: (state, action) => {
       state.jwtToken = action.payload;
     },
-   
   },
 });
 
-export const {
-  resetAuthenticationDataSlice,
-  setJwtToken,
-} = authenticationDataSlice.actions;
+export const { resetAuthenticationDataSlice, setJwtToken } =
+  authenticationDataSlice.actions;
 
 export default authenticationDataSlice.reducer;

@@ -36,7 +36,7 @@ const Dashboard = () => {
           <Row>
             {data?.map((item: any, index: any) => (
               <Col md={3} xs={6} key={index}>
-                <div className="dashboard-card">
+                <div className="dashboard-card" >
                   <h6>{item?.title}</h6>
                   <h5>
                     {loading ? (

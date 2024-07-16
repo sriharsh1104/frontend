@@ -14,6 +14,9 @@ import "./Sidebar.scss";
 import { logout } from "../../../Api/user.action";
 import toast from "react-hot-toast";
 import { resetAuthenticationDataSlice } from "../../../Redux/authenticationData/authenticationData";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { resetUserDataSlice } from "../../../Redux/userData/userData";
 
 type propTypes = {
   active?: boolean;
@@ -38,7 +41,7 @@ const Sidebar = (props: propTypes) => {
     },
   ];
   const navigate = useNavigate();
-
+  const dispatch: Dispatch<any> = useDispatch<any>();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -47,7 +50,8 @@ const Sidebar = (props: propTypes) => {
     const result: any = await logout();
     if (result?.status === 200) {
       console.log("result", result);
-      resetAuthenticationDataSlice()
+      dispatch(resetAuthenticationDataSlice())
+      dispatch(resetUserDataSlice())
       navigate("/");
       toast.success(result?.message);
     } else {

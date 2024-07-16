@@ -15,7 +15,7 @@ const MyBlog = () => {
   const validationSchema = Yup.object({
     title: Yup.string().required("Title Is Required"),
     description: Yup.string().required("Please Enter Description"),
-  }); 
+  });
   const onSubmit = async (values: any) => {
     const blogDetails: any = {
       title: values?.title,
@@ -31,11 +31,7 @@ const MyBlog = () => {
   };
 
   return (
-    <AuthCard
-      isLogo
-      title="Create Your Blogs"
-      subtitle="Show Your View On Blogs"
-    >
+    <AuthCard title="Create Your Blogs" subtitle="Show Your View On Blogs">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -56,12 +52,15 @@ const MyBlog = () => {
             <Input
               label="description"
               placeholder="description"
-              type="text"
+              type="textarea"
               onChange={formik?.handleChange}
               onBlur={formik?.handleBlur}
               value={formik?.values?.description}
               formik={formik}
               name="description"
+              row={true}
+              isTextArea={true}
+              rows={8}
             />
             <CustomButton
               text="Create Blog"
