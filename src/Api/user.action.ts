@@ -1,5 +1,10 @@
 import store from "../Redux/store";
-import { apiCallDelete, apiCallGet, apiCallPost, apiCallPut } from "../Services/axios.service";
+import {
+  apiCallDelete,
+  apiCallGet,
+  apiCallPost,
+  apiCallPut,
+} from "../Services/axios.service";
 import { APIURL } from "../utils/constant";
 
 export const signIn = async (data: any): Promise<any> => {
@@ -42,7 +47,7 @@ export const signUp = async (data: any): Promise<any> => {
 
 export const dashboardBlog = async (): Promise<any> => {
   const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
-  console.log('accessToken', accessToken)
+  console.log("accessToken", accessToken);
 
   const headers = {
     "Content-Type": "application/json",

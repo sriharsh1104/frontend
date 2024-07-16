@@ -1,29 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 interface EditModalProps {
   show: boolean;
   onHide: () => void;
   onUpdate: (title: string, description: string) => void;
-//   currentTitle: string;
-//   currentDescription: string;
+  currentTitle: string;
+  currentDescription: string;
 }
 
 const EditModal: React.FC<EditModalProps> = ({
   show,
   onHide,
   onUpdate,
-//   currentTitle,
-//   currentDescription,
+  currentTitle,
+  currentDescription,
 }) => {
-  const [title, setTitle] = useState<any>("");
-  const [description, setDescription] = useState<any>("");
+  console.log("=====================", currentTitle, currentDescription);
+  const blogData: any = useSelector(
+    (state: any) => state?.userDataSlice?.myBlogData
+  );
+  const [title, setTitle] = useState<any>(currentTitle);
+  const [description, setDescription] = useState<any>(currentDescription);
 
   const handleUpdate = () => {
     onUpdate(title, description);
     onHide();
   };
+  useEffect(() => {
+    console.log("shshhshsshss", show);
+    if (show) {
+      setTitle(currentTitle);
+      setDescription(currentDescription);
+    }
+  }, [show, currentTitle, currentDescription]);
 
+  console.log("hshsshhsshhsshhshs", title, description);
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>

@@ -2,16 +2,25 @@ import { Col, Container, Row } from "react-bootstrap";
 import { CustomButton, Shimmer } from "../../Components/UI";
 import { useEffect, useState } from "react";
 import "./Dashboard.scss";
-import { deleteBlog, updateBlog, userSpecifiedBlog } from "../../Api/user.action";
+import {
+  deleteBlog,
+  updateBlog,
+  userSpecifiedBlog,
+} from "../../Api/user.action";
 import DeleteModal from "./DeleteModal/DeletModal";
 import EditModal from "./EditModal/EditModal";
+import { setMyBlogData } from "../../Redux/userData/userData";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
 
 const MyBlog = () => {
   const [loading, setLoading] = useState(true);
+  const dispatch: Dispatch<any> = useDispatch<any>();
   const [data, setData] = useState<any>();
   const [deleteShowModal, setDeleteShowModal] = useState<boolean>(false);
   const [editShowModal, setEditShowModal] = useState<boolean>(false);
-  
+  const [currentTitle, setCurrentTitle] = useState<string>("");
+  const [currentDescription, setCurrentDescription] = useState<string>("");
 
   const [selectedBlogId, setSelectedBlogId] = useState<any>();
 
@@ -24,14 +33,16 @@ const MyBlog = () => {
   const fetchData = async () => {
     try {
       const response = await userSpecifiedBlog();
-      setData(response?.data); // Adjust the API endpoint as necessary
+      setData(response?.data);
+      dispatch(setMyBlogData(response?.data)) // Adjust the API endpoint as necessary
+      console.log('first', (response?.data))
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -53,11 +64,11 @@ const MyBlog = () => {
     }
   };
 
-  const handleUpdateBlog = async (title:any,description:any) => {
+  const handleUpdateBlog = async (title: any, description: any) => {
     const blogId: any = {
       id: data[0]._id,
       title,
-      description
+      description,
     };
     console.log("data", data[0]._id);
     try {
@@ -76,9 +87,11 @@ const MyBlog = () => {
     setSelectedBlogId(id);
     setDeleteShowModal(true);
   };
-  const handleEditClick = (id: any) => {
+  const handleEditClick = (id: any, title: string, description: string) => {
     setSelectedBlogId(id);
     setEditShowModal(true);
+    setCurrentTitle(title);
+    setCurrentDescription(description);
   };
 
   const handleCloseModal = () => {
@@ -111,7 +124,13 @@ const MyBlog = () => {
                     <CustomButton
                       text="Edit"
                       className="w-100"
-                      onClick={() => handleEditClick(item?._id)}
+                      onClick={() =>
+                        handleEditClick(
+                          item?._id,
+                          item?.title,
+                          item?.description
+                        )
+                      }
                     />
                   </h5>
                 </div>
@@ -129,6 +148,8 @@ const MyBlog = () => {
         show={editShowModal}
         onHide={handleCloseModal}
         onUpdate={handleUpdateBlog}
+        currentTitle={currentTitle}
+        currentDescription={currentDescription}
       />
     </div>
   );
