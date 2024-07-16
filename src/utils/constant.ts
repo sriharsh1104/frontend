@@ -7,6 +7,7 @@ interface API_END_POINTS {
   GET_USER_SPECIFIED_BLOG: string;
   CREATE_BLOG: string;
   DELETE_BLOG: string;
+  UPDATE_BLOG: string;
   LOGOUT: string;
 
 
@@ -19,6 +20,8 @@ export const APIURL: API_END_POINTS = {
   GET_USER_SPECIFIED_BLOG:"/blog/getBlogData",
   CREATE_BLOG:"/blog/createBlog",
   DELETE_BLOG:"/blog/deleteBlog",
-  LOGOUT:"/users/logout"
+  LOGOUT:"/users/logout",
+  UPDATE_BLOG: "/blog/updateBlog",
+
 
 };

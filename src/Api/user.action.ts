@@ -1,5 +1,5 @@
 import store from "../Redux/store";
-import { apiCallDelete, apiCallGet, apiCallPost } from "../Services/axios.service";
+import { apiCallDelete, apiCallGet, apiCallPost, apiCallPut } from "../Services/axios.service";
 import { APIURL } from "../utils/constant";
 
 export const signIn = async (data: any): Promise<any> => {
@@ -143,12 +143,13 @@ export const updateBlog = async (data: any): Promise<any> => {
     "Content-Type": "application/json",
     Authorization: `${accessToken}`,
   };
-  const { title, description } = data;
+  const { id, title, description } = data;
 
   try {
-    let result: any = await apiCallPost(
-      APIURL["DELETE_BLOG"],
+    let result: any = await apiCallPut(
+      APIURL["UPDATE_BLOG"],
       {
+        id: id,
         title: title,
         description: description,
       },

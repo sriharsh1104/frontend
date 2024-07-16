@@ -2,13 +2,17 @@ import { Col, Container, Row } from "react-bootstrap";
 import { CustomButton, Shimmer } from "../../Components/UI";
 import { useEffect, useState } from "react";
 import "./Dashboard.scss";
-import { deleteBlog, userSpecifiedBlog } from "../../Api/user.action";
+import { deleteBlog, updateBlog, userSpecifiedBlog } from "../../Api/user.action";
 import DeleteModal from "./DeleteModal/DeletModal";
+import EditModal from "./EditModal/EditModal";
 
 const MyBlog = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>();
-  const [showModal, setShowModal] = useState(false);
+  const [deleteShowModal, setDeleteShowModal] = useState<boolean>(false);
+  const [editShowModal, setEditShowModal] = useState<boolean>(false);
+  
+
   const [selectedBlogId, setSelectedBlogId] = useState<any>();
 
   useEffect(() => {
@@ -16,6 +20,7 @@ const MyBlog = () => {
       setLoading(false);
     }, 2000);
   }, []);
+
   const fetchData = async () => {
     try {
       const response = await userSpecifiedBlog();
@@ -26,8 +31,8 @@ const MyBlog = () => {
       setLoading(false);
     }
   };
+  
   useEffect(() => {
-
     fetchData();
   }, []);
 
@@ -39,7 +44,7 @@ const MyBlog = () => {
     try {
       const response = await deleteBlog(blogId);
       console.log("response", response); // Adjust the API endpoint as necessary
-      setShowModal(false); 
+      setDeleteShowModal(false);
       fetchData();
     } catch (error) {
       console.error("Error deleting dashboard data:", error);
@@ -47,13 +52,38 @@ const MyBlog = () => {
       setLoading(false);
     }
   };
+
+  const handleUpdateBlog = async (title:any,description:any) => {
+    const blogId: any = {
+      id: data[0]._id,
+      title,
+      description
+    };
+    console.log("data", data[0]._id);
+    try {
+      const response = await updateBlog(blogId);
+      console.log("response", response); // Adjust the API endpoint as necessary
+      setEditShowModal(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error edit dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleDeleteClick = (id: any) => {
     setSelectedBlogId(id);
-    setShowModal(true);
+    setDeleteShowModal(true);
+  };
+  const handleEditClick = (id: any) => {
+    setSelectedBlogId(id);
+    setEditShowModal(true);
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setDeleteShowModal(false);
+    setEditShowModal(false);
     setSelectedBlogId(null);
   };
 
@@ -80,8 +110,8 @@ const MyBlog = () => {
                     />
                     <CustomButton
                       text="Edit"
-                      // className="w-100"
-                      onClick={() => handleDeleteClick(item?._id)}
+                      className="w-100"
+                      onClick={() => handleEditClick(item?._id)}
                     />
                   </h5>
                 </div>
@@ -91,9 +121,14 @@ const MyBlog = () => {
         </div>
       </Container>
       <DeleteModal
-        show={showModal}
+        show={deleteShowModal}
         onHide={handleCloseModal}
         onDelete={handleConfirmDelete}
+      />
+      <EditModal
+        show={editShowModal}
+        onHide={handleCloseModal}
+        onUpdate={handleUpdateBlog}
       />
     </div>
   );
