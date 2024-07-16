@@ -16,17 +16,17 @@ const MyBlog = () => {
       setLoading(false);
     }, 2000);
   }, []);
+  const fetchData = async () => {
+    try {
+      const response = await userSpecifiedBlog();
+      setData(response?.data); // Adjust the API endpoint as necessary
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await userSpecifiedBlog();
-        setData(response?.data); // Adjust the API endpoint as necessary
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchData();
   }, []);
@@ -39,6 +39,8 @@ const MyBlog = () => {
     try {
       const response = await deleteBlog(blogId);
       console.log("response", response); // Adjust the API endpoint as necessary
+      setShowModal(false); 
+      fetchData();
     } catch (error) {
       console.error("Error deleting dashboard data:", error);
     } finally {
@@ -74,6 +76,11 @@ const MyBlog = () => {
                     <CustomButton
                       text="Delete"
                       className="w-100"
+                      onClick={() => handleDeleteClick(item?._id)}
+                    />
+                    <CustomButton
+                      text="Edit"
+                      // className="w-100"
                       onClick={() => handleDeleteClick(item?._id)}
                     />
                   </h5>

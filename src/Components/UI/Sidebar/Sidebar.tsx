@@ -13,6 +13,7 @@ import UserInfo from "../UserInfo/UserInfo";
 import "./Sidebar.scss";
 import { logout } from "../../../Api/user.action";
 import toast from "react-hot-toast";
+import { resetAuthenticationDataSlice } from "../../../Redux/authenticationData/authenticationData";
 
 type propTypes = {
   active?: boolean;
@@ -46,6 +47,7 @@ const Sidebar = (props: propTypes) => {
     const result: any = await logout();
     if (result?.status === 200) {
       console.log("result", result);
+      resetAuthenticationDataSlice()
       navigate("/");
       toast.success(result?.message);
     } else {

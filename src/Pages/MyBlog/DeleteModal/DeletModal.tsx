@@ -12,6 +12,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   onHide,
   onDelete,
 }) => {
+  
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>

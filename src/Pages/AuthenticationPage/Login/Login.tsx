@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import {
@@ -73,14 +73,17 @@ const Login = () => {
               formik={formik}
               name="password"
             />
-            {/* <div className="forgot-link">
+            <div className="forgot-link">
               <Link to="/forgot-password">Forgot Password</Link>
-            </div> */}
+            </div>
             <CustomButton
               text="Login"
               className="w-100"
               disabled={!formik?.isValid}
             />
+            <div className="signup-link">
+              <Link to="/signup">Don't have an account? Sign Up</Link>
+            </div>
           </Form>
         )}
       </Formik>

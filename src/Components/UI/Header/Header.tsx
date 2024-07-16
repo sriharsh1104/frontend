@@ -25,7 +25,7 @@ const Header = (props: propTypes) => {
             <Link className="d-xl-none header-logo" to="/dashboard">
               <img className="d-xl-none" src={logo} alt="small-logo" />
             </Link>
-            <h5>Welcome to Flash Loan</h5>
+            <h5>Welcome to World of Blog</h5>
           </div>
           <div className="header__inner__actions">
             {/* <CustomSelect

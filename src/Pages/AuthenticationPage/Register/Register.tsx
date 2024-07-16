@@ -73,9 +73,7 @@ const Register = () => {
               formik={formik}
               name="password"
             />
-            {/* <div className="forgot-link">
-              <Link to="/forgot-password">Forgot Password</Link>
-            </div> */}
+            
             <CustomButton
               text="Register"
               className="w-100"

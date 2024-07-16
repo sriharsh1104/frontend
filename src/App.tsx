@@ -7,6 +7,7 @@ import { Loader } from "./Components/UI";
 import Register from "./Pages/AuthenticationPage/Register/Register";
 import MyBlog from "./Pages/MyBlog/MyBlog";
 import Blog from "./Pages/CreateBlog/CreateBlog";
+import ForgotPassword from "./Pages/AuthenticationPage/ForgotPassword/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -21,10 +22,10 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       
-      // {
-      //   path: "forgot-password",
-      //   element: <ForgotPassword />,
-      // },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
       // {
       //   path: "reset-password",
       //   element: <ResetPassword />,
