@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import logo from "../../../../Assets/Icon/logo-full.png";
+import logo from "../../../../Assets/Icon/file.png";
 import "./AuthCard.scss";
 
 const AuthCard = ({
@@ -17,7 +17,7 @@ const AuthCard = ({
     <div className="auth-card">
       {isLogo && (
         <div className="auth-card__logo">
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo" height={100} width={1000} />
         </div>
       )}
       {(title || subtitle) && (

@@ -6,7 +6,7 @@ import {
   HistoryIcon,
   LogoutIcon,
 } from "../../../Assets/Icon/svg/SvgIcons";
-import logo from "../../../Assets/Icon/logo-full.png";
+import logo from "../../../Assets/Icon/file.png";
 import LogoutModal from "../Modal/LogoutModal/LogoutModal";
 import CustomButton from "../CustomButton/CustomButton";
 import UserInfo from "../UserInfo/UserInfo";
@@ -95,7 +95,7 @@ const Sidebar = (props: propTypes) => {
           className="sidebar__logo"
           onClick={props.handleActive}
         >
-          <img src={logo} alt="logo" height={30} />
+          <img src={logo} alt="logo" height={100} />
         </Link>
         <div className="sidebar__inner">
           <ul className="sidebar__inner__top">

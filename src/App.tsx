@@ -8,6 +8,7 @@ import Register from "./Pages/AuthenticationPage/Register/Register";
 import MyBlog from "./Pages/MyBlog/MyBlog";
 import Blog from "./Pages/CreateBlog/CreateBlog";
 import ForgotPassword from "./Pages/AuthenticationPage/ForgotPassword/ForgotPassword";
+import { RequireAuth } from "./Guard/AuthGuard";
 
 const router = createBrowserRouter([
   {
@@ -15,13 +16,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Login />,
+        element:  <Login />,
       },
       {
         path: "/signup",
         element: <Register />,
       },
-      
+
       {
         path: "forgot-password",
         element: <ForgotPassword />,
@@ -38,16 +39,28 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: (
+          <RequireAuth>
+            <Dashboard />,
+          </RequireAuth>
+        ),
       },
 
       {
         path: "/createBlog",
-        element: <Blog />,
+        element: (
+          <RequireAuth>
+            <Blog />,
+          </RequireAuth>
+        ),
       },
       {
         path: "/myBlog",
-        element: <MyBlog />,
+        element: (
+          <RequireAuth>
+            <MyBlog />,
+          </RequireAuth>
+        ),
       },
     ],
   },
