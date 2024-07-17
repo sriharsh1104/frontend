@@ -3,10 +3,15 @@ import { Shimmer } from "../../Components/UI";
 import { useEffect, useState } from "react";
 import "./Dashboard.scss";
 import { dashboardBlog } from "../../Api/user.action";
+import FullBlog from "../MyBlog/FullBlog/FullBlog";
 
 const Dashboard = () => {
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState(true);
+  const [fullBlogModal, setFullBlogModal] = useState<boolean>(false);
+  const [currentTitle, setCurrentTitle] = useState<string>("");
+  const [currentDescription, setCurrentDescription] = useState<string>("");
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -27,6 +32,14 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
+  const handleCloseModal = () => {
+    setFullBlogModal(false);
+  };
+  const handleReadMoreClick = (title: string, description: string) => {
+    setCurrentTitle(title);
+    setCurrentDescription(description);
+    setFullBlogModal(true);
+  };
 
   return (
     <div className="dashboard">
@@ -42,9 +55,16 @@ const Dashboard = () => {
                     {loading ? (
                       <Shimmer height={"20px"} width="150px" />
                     ) : (
-                      <div>
-                      <h6>${item?.description}</h6>
-                      </div>
+                      `${item?.description.substring(0, 100)}`
+                    )}
+                    {item?.description.length > 100 && (
+                      <button
+                        onClick={() =>
+                          handleReadMoreClick(item?.title, item?.description)
+                        }
+                      >
+                        Read More
+                      </button>
                     )}
                   </h5>
                 </div>
@@ -53,6 +73,12 @@ const Dashboard = () => {
           </Row>
         </div>
       </Container>
+      <FullBlog
+        show={fullBlogModal}
+        onHide={handleCloseModal}
+        title={currentTitle}
+        description={currentDescription}
+      />
     </div>
   );
 };

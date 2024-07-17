@@ -9,9 +9,11 @@ import {
 } from "../../Api/user.action";
 import DeleteModal from "./DeleteModal/DeletModal";
 import EditModal from "./EditModal/EditModal";
+// import FullBlog from "./FullBlog"; // Import FullBlog component
 import { setMyBlogData } from "../../Redux/userData/userData";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
+import FullBlog from "./FullBlog/FullBlog";
 
 const MyBlog = () => {
   const [loading, setLoading] = useState(true);
@@ -19,6 +21,7 @@ const MyBlog = () => {
   const [data, setData] = useState<any>();
   const [deleteShowModal, setDeleteShowModal] = useState<boolean>(false);
   const [editShowModal, setEditShowModal] = useState<boolean>(false);
+  const [fullBlogModal, setFullBlogModal] = useState<boolean>(false);
   const [currentTitle, setCurrentTitle] = useState<string>("");
   const [currentDescription, setCurrentDescription] = useState<string>("");
 
@@ -94,9 +97,16 @@ const MyBlog = () => {
     setCurrentDescription(description);
   };
 
+  const handleReadMoreClick = (title: string, description: string) => {
+    setCurrentTitle(title);
+    setCurrentDescription(description);
+    setFullBlogModal(true);
+  };
+
   const handleCloseModal = () => {
     setDeleteShowModal(false);
     setEditShowModal(false);
+    setFullBlogModal(false);
     setSelectedBlogId(null);
   };
 
@@ -114,7 +124,16 @@ const MyBlog = () => {
                     {loading ? (
                       <Shimmer height={"20px"} width="150px" />
                     ) : (
-                      `${item?.description}`
+                      `${item?.description.substring(0, 100)}`
+                    )}
+                    {item?.description.length > 100 && (
+                      <button
+                        onClick={() =>
+                          handleReadMoreClick(item?.title, item?.description)
+                        }
+                      >
+                        Read More
+                      </button>
                     )}
                     <CustomButton
                       text="Delete"
@@ -150,6 +169,12 @@ const MyBlog = () => {
         onUpdate={handleUpdateBlog}
         currentTitle={currentTitle}
         currentDescription={currentDescription}
+      />
+      <FullBlog
+        show={fullBlogModal}
+        onHide={handleCloseModal}
+        title={currentTitle}
+        description={currentDescription}
       />
     </div>
   );
