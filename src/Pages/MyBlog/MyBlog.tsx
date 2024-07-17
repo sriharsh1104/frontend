@@ -35,7 +35,6 @@ const MyBlog = () => {
       const response = await userSpecifiedBlog();
       setData(response?.data);
       dispatch(setMyBlogData(response?.data)) // Adjust the API endpoint as necessary
-      console.log('first', (response?.data))
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
@@ -49,7 +48,7 @@ const MyBlog = () => {
 
   const handleConfirmDelete = async () => {
     const blogId: any = {
-      id: data[0]._id,
+      id: selectedBlogId,
     };
     console.log("data", data[0]._id);
     try {
@@ -66,7 +65,7 @@ const MyBlog = () => {
 
   const handleUpdateBlog = async (title: any, description: any) => {
     const blogId: any = {
-      id: data[0]._id,
+      id: selectedBlogId,
       title,
       description,
     };
@@ -84,8 +83,9 @@ const MyBlog = () => {
   };
 
   const handleDeleteClick = (id: any) => {
-    setSelectedBlogId(id);
+    setSelectedBlogId(id)
     setDeleteShowModal(true);
+    console.log('setSelectedBlogId', id)
   };
   const handleEditClick = (id: any, title: string, description: string) => {
     setSelectedBlogId(id);

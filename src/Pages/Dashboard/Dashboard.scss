@@ -51,52 +51,14 @@
     padding: 1.5rem;
   }
 
-  &__icon {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 7rem;
-    height: 7rem;
-    margin-bottom: 2rem;
-    border-radius: 1rem;
-    background-color: rgba($lightGray, 0.7);
-    border: 0.1rem solid rgba($borderClr, 0.7);
-
-    @media (max-width: 1679px) {
-      width: 6rem;
-      height: 6rem;
-      margin-bottom: 1.5rem;
-    }
-
-    @media (max-width: 767px) {
-      width: 4.5rem;
-      height: 4.5rem;
-      margin-bottom: 1rem;
-    }
-
-    svg {
-      width: 3rem;
-      height: 3rem;
-      @media (max-width: 1679px) {
-        width: 2.6rem;
-        height: 2.6rem;
-      }
-      @media (max-width: 767px) {
-        width: 1.8rem;
-        height: 1.8rem;
-      }
-
-      path {
-        fill: #000000;
-      }
-    }
-  }
   h6 {
     font-weight: 500;
     color: $secondary4;
-    line-height: 0.8;
+    line-height: 1.2;
     margin-bottom: 1rem;
-
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     @media (max-width: 767px) {
       margin-bottom: 0.75rem;
     }
@@ -110,3 +72,4 @@
     }
   }
 }
+

@@ -35,14 +35,16 @@ const Dashboard = () => {
           <h5>Dashboard</h5>
           <Row>
             {data?.map((item: any, index: any) => (
-              <Col md={3} xs={6} key={index}>
-                <div className="dashboard-card" >
-                  <h6>{item?.title}</h6>
+              <Col md={6} xs={3} key={index}>
+                <div className="dashboard-card">
+                  <h3>{item?.title}</h3>
                   <h5>
                     {loading ? (
                       <Shimmer height={"20px"} width="150px" />
                     ) : (
-                      `${item?.description}`
+                      <div>
+                      <h6>${item?.description}</h6>
+                      </div>
                     )}
                   </h5>
                 </div>
