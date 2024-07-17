@@ -53,7 +53,6 @@ const MyBlog = () => {
     const blogId: any = {
       id: selectedBlogId,
     };
-    console.log("data", data[0]._id);
     try {
       const response = await deleteBlog(blogId);
       console.log("response", response); // Adjust the API endpoint as necessary
@@ -88,7 +87,6 @@ const MyBlog = () => {
   const handleDeleteClick = (id: any) => {
     setSelectedBlogId(id)
     setDeleteShowModal(true);
-    console.log('setSelectedBlogId', id)
   };
   const handleEditClick = (id: any, title: string, description: string) => {
     setSelectedBlogId(id);
@@ -117,7 +115,7 @@ const MyBlog = () => {
           <h5>My Blog</h5>
           <Row>
             {data?.map((item: any, index: any) => (
-              <Col md={3} xs={6} key={index}>
+              <Col md={3} xs={3} key={index}>
                 <div className="dashboard-card">
                   <h6>{item?.title}</h6>
                   <h5>

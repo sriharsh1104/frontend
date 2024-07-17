@@ -2,8 +2,9 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Shimmer } from "../../Components/UI";
 import { useEffect, useState } from "react";
 import "./Dashboard.scss";
-import { dashboardBlog } from "../../Api/user.action";
+import { dashboardBlog, LikeBlogPost } from "../../Api/user.action";
 import FullBlog from "../MyBlog/FullBlog/FullBlog";
+import { LikeIcon } from "../../Assets/Icon/svg/SvgIcons";
 
 const Dashboard = () => {
   const [data, setData] = useState<any>();
@@ -12,24 +13,22 @@ const Dashboard = () => {
   const [currentTitle, setCurrentTitle] = useState<string>("");
   const [currentDescription, setCurrentDescription] = useState<string>("");
 
-
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 2000);
   }, []);
+  const fetchData = async () => {
+    try {
+      const response = await dashboardBlog();
+      setData(response?.data);
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dashboardBlog();
-        setData(response?.data);
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
   const handleCloseModal = () => {
@@ -40,7 +39,21 @@ const Dashboard = () => {
     setCurrentDescription(description);
     setFullBlogModal(true);
   };
+  const handleLikeClick = async (_id: string) => {
+    console.log("iddsadasdsad", _id);
+    const blogId: any = {
+      id: _id,
+    };
+    try {
+      const result = await LikeBlogPost(blogId);
+      console.log("LikePost", result);
+      fetchData();
 
+      // Update the UI to reflect the new like count if needed
+    } catch (error) {
+      console.error("Error liking the post:", error);
+    }
+  };
   return (
     <div className="dashboard">
       <Container>
@@ -48,7 +61,7 @@ const Dashboard = () => {
           <h5>Dashboard</h5>
           <Row>
             {data?.map((item: any, index: any) => (
-              <Col md={6} xs={3} key={index}>
+              <Col md={3} xs={3} key={index}>
                 <div className="dashboard-card">
                   <h3>{item?.title}</h3>
                   <h5>
@@ -67,6 +80,9 @@ const Dashboard = () => {
                       </button>
                     )}
                   </h5>
+                  <div onClick={() => handleLikeClick(item?._id)}>
+                    <LikeIcon />{item?.likes}
+                  </div>
                 </div>
               </Col>
             ))}

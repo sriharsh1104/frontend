@@ -190,3 +190,28 @@ export const logout = async (): Promise<any> => {
     throw error;
   }
 };
+
+export const LikeBlogPost= async (data:any): Promise<any> => {
+  const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `${accessToken}`,
+  };
+  const { id } = data;
+  try {
+    let result: any = await apiCallPost(
+      APIURL["LIKEPOST"],
+      {
+        id:id
+      },
+      {},
+      false,
+      headers
+    );
+    return result;
+  } catch (error) {
+    console.log("error register", error);
+    throw error;
+  }
+};
