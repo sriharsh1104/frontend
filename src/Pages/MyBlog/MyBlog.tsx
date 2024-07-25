@@ -18,7 +18,7 @@ import FullBlog from "./FullBlog/FullBlog";
 const MyBlog = () => {
   const [loading, setLoading] = useState(true);
   const dispatch: Dispatch<any> = useDispatch<any>();
-  const [data, setData] = useState<any>();
+  const [dataBlog, setDataBlog] = useState<any>();
   const [deleteShowModal, setDeleteShowModal] = useState<boolean>(false);
   const [editShowModal, setEditShowModal] = useState<boolean>(false);
   const [fullBlogModal, setFullBlogModal] = useState<boolean>(false);
@@ -36,15 +36,15 @@ const MyBlog = () => {
   const fetchData = async () => {
     try {
       const response = await userSpecifiedBlog();
-      setData(response?.data);
+      setDataBlog(response.data);
       dispatch(setMyBlogData(response?.data)) // Adjust the API endpoint as necessary
+      console.log('data', response)
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -71,7 +71,7 @@ const MyBlog = () => {
       title,
       description,
     };
-    console.log("data", data[0]._id);
+    console.log("data", dataBlog[0]._id);
     try {
       const response = await updateBlog(blogId);
       console.log("response", response); // Adjust the API endpoint as necessary
@@ -107,52 +107,52 @@ const MyBlog = () => {
     setFullBlogModal(false);
     setSelectedBlogId(null);
   };
-
   return (
     <div className="dashboard">
       <Container>
         <div className="dashboard__top">
           <h5>My Blog</h5>
           <Row>
-            {data?.map((item: any, index: any) => (
-              <Col md={3} xs={3} key={index}>
-                <div className="dashboard-card">
-                  <h6>{item?.title}</h6>
-                  <h5>
-                    {loading ? (
-                      <Shimmer height={"20px"} width="150px" />
-                    ) : (
-                      `${item?.description.substring(0, 100)}`
-                    )}
-                    {item?.description.length > 100 && (
-                      <button
+            {loading ? (
+              <Shimmer height={"20px"} width="100%" />
+            ) : dataBlog?.length > 0 ? (
+              <>
+                {dataBlog.message && <p>{dataBlog.message}</p>}
+                {dataBlog?.map((item: any, index: any) => (
+                  <Col md={3} xs={3} key={index}>
+                    <div className="dashboard-card">
+                      <h6>{item?.title}</h6>
+                      <p>
+                        {item?.description.substring(0, 100)}
+                        {item?.description.length > 100 && (
+                          <button
+                            onClick={() =>
+                              handleReadMoreClick(item?.title, item?.description)
+                            }
+                          >
+                            Read More
+                          </button>
+                        )}
+                      </p>
+                      <CustomButton
+                        text="Delete"
+                        className="w-100"
+                        onClick={() => handleDeleteClick(item?._id)}
+                      />
+                      <CustomButton
+                        text="Edit"
+                        className="w-100"
                         onClick={() =>
-                          handleReadMoreClick(item?.title, item?.description)
+                          handleEditClick(item?._id, item?.title, item?.description)
                         }
-                      >
-                        Read More
-                      </button>
-                    )}
-                    <CustomButton
-                      text="Delete"
-                      className="w-100"
-                      onClick={() => handleDeleteClick(item?._id)}
-                    />
-                    <CustomButton
-                      text="Edit"
-                      className="w-100"
-                      onClick={() =>
-                        handleEditClick(
-                          item?._id,
-                          item?.title,
-                          item?.description
-                        )
-                      }
-                    />
-                  </h5>
-                </div>
-              </Col>
-            ))}
+                      />
+                    </div>
+                  </Col>
+                ))}
+              </>
+            ) : (
+              <h1>No Blogs Available</h1>
+            )}
           </Row>
         </div>
       </Container>

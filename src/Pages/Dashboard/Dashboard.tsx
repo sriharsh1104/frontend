@@ -7,11 +7,13 @@ import FullBlog from "../MyBlog/FullBlog/FullBlog";
 import { LikeIcon } from "../../Assets/Icon/svg/SvgIcons";
 
 const Dashboard = () => {
-  const [data, setData] = useState<any>();
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [fullBlogModal, setFullBlogModal] = useState<boolean>(false);
   const [currentTitle, setCurrentTitle] = useState<string>("");
   const [currentDescription, setCurrentDescription] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<any>(); 
+  
 
   useEffect(() => {
     setTimeout(() => {
@@ -20,8 +22,9 @@ const Dashboard = () => {
   }, []);
   const fetchData = async () => {
     try {
-      const response = await dashboardBlog();
+      const response = await dashboardBlog(searchQuery);
       setData(response?.data);
+      console.log('response', response)
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
@@ -30,7 +33,7 @@ const Dashboard = () => {
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [searchQuery]);
   const handleCloseModal = () => {
     setFullBlogModal(false);
   };
@@ -40,25 +43,40 @@ const Dashboard = () => {
     setFullBlogModal(true);
   };
   const handleLikeClick = async (_id: string) => {
-    console.log("iddsadasdsad", _id);
     const blogId: any = {
       id: _id,
     };
     try {
       const result = await LikeBlogPost(blogId);
-      console.log("LikePost", result);
       fetchData();
+      console.log("result", result);
 
       // Update the UI to reflect the new like count if needed
     } catch (error) {
       console.error("Error liking the post:", error);
     }
   };
+
   return (
     <div className="dashboard">
       <Container>
         <div className="dashboard__top">
           <h5>Dashboard</h5>
+          <div className="search-bar">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search for blogs..."
+            />
+            </div>
+          <div className="sort-options">
+            <select>
+              <option value="latest">Latest</option>
+              <option value="mostLiked">Most Liked</option>
+              <option value="Oldest">Oldest</option>
+            </select>
+          </div>
           <Row>
             {data?.map((item: any, index: any) => (
               <Col md={3} xs={3} key={index}>
@@ -81,7 +99,8 @@ const Dashboard = () => {
                     )}
                   </h5>
                   <div onClick={() => handleLikeClick(item?._id)}>
-                    <LikeIcon />{item?.likes}
+                    <LikeIcon />
+                    {item?.likes}
                   </div>
                 </div>
               </Col>

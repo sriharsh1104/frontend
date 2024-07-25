@@ -45,17 +45,18 @@ export const signUp = async (data: any): Promise<any> => {
   }
 };
 
-export const dashboardBlog = async (): Promise<any> => {
+export const dashboardBlog = async (searchQuery = ''): Promise<any> => {
   const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
 
   const headers = {
     "Content-Type": "application/json",
     Authorization: `${accessToken}`,
   };
+  const queryParams = searchQuery ? { title: searchQuery } : {};
   try {
     let result: any = await apiCallGet(
-      APIURL["GET_DASHBOARD_BLOG"],
-      {},
+      APIURL["GET_DASHBOARD_BLOG"] ,
+      queryParams,
       false,
       headers
     );
