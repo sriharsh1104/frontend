@@ -1,10 +1,11 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { Shimmer } from "../../Components/UI";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./Dashboard.scss";
 import { dashboardBlog, LikeBlogPost } from "../../Api/user.action";
 import FullBlog from "../MyBlog/FullBlog/FullBlog";
 import { LikeIcon } from "../../Assets/Icon/svg/SvgIcons";
+import debounce from "debounce";
 
 const Dashboard = () => {
   const [data, setData] = useState<any>([]);
@@ -12,28 +13,30 @@ const Dashboard = () => {
   const [fullBlogModal, setFullBlogModal] = useState<boolean>(false);
   const [currentTitle, setCurrentTitle] = useState<string>("");
   const [currentDescription, setCurrentDescription] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<any>(); 
-  
+  const [searchQuery, setSearchQuery] = useState<any>();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
-  const fetchData = async () => {
+  const fetchData = useCallback(async (query: string) => {
     try {
-      const response = await dashboardBlog(searchQuery);
+      const response = await dashboardBlog(query);
       setData(response?.data);
-      console.log('response', response)
+      console.log("response", response);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  const debouncedFetchData = useCallback(
+    debounce((query: string) => fetchData(query), 500),
+    [fetchData]
+  );
+
   useEffect(() => {
-    fetchData();
-  }, [searchQuery]);
+    setLoading(true); // Set loading to true when the query changes
+    debouncedFetchData(searchQuery);
+  }, [searchQuery, debouncedFetchData]);
+
   const handleCloseModal = () => {
     setFullBlogModal(false);
   };
@@ -48,7 +51,7 @@ const Dashboard = () => {
     };
     try {
       const result = await LikeBlogPost(blogId);
-      fetchData();
+      await fetchData(searchQuery);
       console.log("result", result);
 
       // Update the UI to reflect the new like count if needed
@@ -69,7 +72,7 @@ const Dashboard = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search for blogs..."
             />
-            </div>
+          </div>
           <div className="sort-options">
             <select>
               <option value="latest">Latest</option>
