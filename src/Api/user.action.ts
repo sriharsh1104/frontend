@@ -224,3 +224,29 @@ export const LikeBlogPost = async (data: any): Promise<any> => {
     throw error;
   }
 };
+export const postComment = async (data: any): Promise<any> => {
+  const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `${accessToken}`,
+  };
+  const { content,blogId } = data;
+
+  try {
+    let result: any = await apiCallPost(
+      APIURL["COMMENT"],
+      {
+        content: content,
+        blogId:blogId
+      },
+      {},
+      false,
+      headers
+    );
+    return result;
+  } catch (error) {
+    console.log("error register", error);
+    throw error;
+  }
+};

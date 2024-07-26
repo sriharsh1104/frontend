@@ -10,6 +10,7 @@ interface API_END_POINTS {
   UPDATE_BLOG: string;
   LOGOUT: string;
   LIKEPOST: string;
+  COMMENT:string;
 }
 export const APIURL: API_END_POINTS = {
   LOGIN: "/users/signin",
@@ -20,5 +21,6 @@ export const APIURL: API_END_POINTS = {
   DELETE_BLOG: "/blog/deleteBlog",
   LOGOUT: "/users/logout",
   UPDATE_BLOG: "/blog/updateBlog",
-  LIKEPOST: "/blog/likePost"
+  LIKEPOST: "/blog/likePost",
+  COMMENT: "/blog/comment"
 };

@@ -2,7 +2,11 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Shimmer } from "../../Components/UI";
 import { useCallback, useEffect, useState } from "react";
 import "./Dashboard.scss";
-import { dashboardBlog, LikeBlogPost } from "../../Api/user.action";
+import {
+  dashboardBlog,
+  LikeBlogPost,
+  postComment,
+} from "../../Api/user.action";
 import FullBlog from "../MyBlog/FullBlog/FullBlog";
 import { LikeIcon } from "../../Assets/Icon/svg/SvgIcons";
 import debounce from "debounce";
@@ -14,11 +18,13 @@ const Dashboard = () => {
   const [currentTitle, setCurrentTitle] = useState<string>("");
   const [currentDescription, setCurrentDescription] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<string>("latest"); 
+  const [sortOrder, setSortOrder] = useState<string>("latest");
+  const [currentComment, setCurrentComment] = useState<string>("");
+  const [activeBlogId, setActiveBlogId] = useState<string | null>(null);
 
-  const fetchData = useCallback(async (query: string,order:string) => {
+  const fetchData = useCallback(async (query: string, order: string) => {
     try {
-      const response = await dashboardBlog(query,order);
+      const response = await dashboardBlog(query, order);
       setData(response?.data);
       console.log("response", response);
     } catch (error) {
@@ -29,14 +35,14 @@ const Dashboard = () => {
   }, []);
 
   const debouncedFetchData = useCallback(
-    debounce((query: string,order: string) => fetchData(query,order), 500),
+    debounce((query: string, order: string) => fetchData(query, order), 500),
     [fetchData]
   );
 
   useEffect(() => {
     setLoading(true); // Set loading to true when the query changes
-    debouncedFetchData(searchQuery,sortOrder);
-  }, [searchQuery,sortOrder, debouncedFetchData]);
+    debouncedFetchData(searchQuery, sortOrder);
+  }, [searchQuery, sortOrder, debouncedFetchData]);
 
   const handleCloseModal = () => {
     setFullBlogModal(false);
@@ -52,15 +58,29 @@ const Dashboard = () => {
     };
     try {
       const result = await LikeBlogPost(blogId);
-      await fetchData(searchQuery,sortOrder);
+      await fetchData(searchQuery, sortOrder);
       console.log("result", result);
-
     } catch (error) {
       console.error("Error liking the post:", error);
     }
   };
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOrder(event.target.value);
+  };
+  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentComment(event.target.value);
+  };
+
+  const handleCommentSubmit = async (blogId: string) => {
+    if (!currentComment) return;
+    try {
+      await postComment({ content: currentComment, blogId });
+      setCurrentComment("");
+      setActiveBlogId(null);
+      await fetchData(searchQuery, sortOrder);
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
   };
   return (
     <div className="dashboard">
@@ -84,7 +104,7 @@ const Dashboard = () => {
           </div>
           <Row>
             {data?.map((item: any, index: any) => (
-              <Col md={3} xs={3} key={index}>
+              <Col  xs={12} key={index}>
                 <div className="dashboard-card">
                   <h3>{item?.title}</h3>
                   <h5>
@@ -106,6 +126,18 @@ const Dashboard = () => {
                   <div onClick={() => handleLikeClick(item?._id)}>
                     <LikeIcon />
                     {item?.likes}
+                  </div>
+                  <div className="comment-section">
+                    <input
+                      type="text"
+                      placeholder="Add a comment..."
+                      value={activeBlogId === item._id ? currentComment : ""}
+                      onChange={handleCommentChange}
+                      onFocus={() => setActiveBlogId(item._id)}
+                    />
+                    <button onClick={() => handleCommentSubmit(item._id)}>
+                      Post
+                    </button>
                   </div>
                 </div>
               </Col>
