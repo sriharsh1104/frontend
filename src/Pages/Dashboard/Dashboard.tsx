@@ -14,10 +14,11 @@ const Dashboard = () => {
   const [currentTitle, setCurrentTitle] = useState<string>("");
   const [currentDescription, setCurrentDescription] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<any>();
+  const [sortOrder, setSortOrder] = useState<string>("latest"); 
 
-  const fetchData = useCallback(async (query: string) => {
+  const fetchData = useCallback(async (query: string,order:string) => {
     try {
-      const response = await dashboardBlog(query);
+      const response = await dashboardBlog(query,order);
       setData(response?.data);
       console.log("response", response);
     } catch (error) {
@@ -28,14 +29,14 @@ const Dashboard = () => {
   }, []);
 
   const debouncedFetchData = useCallback(
-    debounce((query: string) => fetchData(query), 500),
+    debounce((query: string,order: string) => fetchData(query,order), 500),
     [fetchData]
   );
 
   useEffect(() => {
     setLoading(true); // Set loading to true when the query changes
-    debouncedFetchData(searchQuery);
-  }, [searchQuery, debouncedFetchData]);
+    debouncedFetchData(searchQuery,sortOrder);
+  }, [searchQuery,sortOrder, debouncedFetchData]);
 
   const handleCloseModal = () => {
     setFullBlogModal(false);
@@ -51,15 +52,16 @@ const Dashboard = () => {
     };
     try {
       const result = await LikeBlogPost(blogId);
-      await fetchData(searchQuery);
+      await fetchData(searchQuery,sortOrder);
       console.log("result", result);
 
-      // Update the UI to reflect the new like count if needed
     } catch (error) {
       console.error("Error liking the post:", error);
     }
   };
-
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOrder(event.target.value);
+  };
   return (
     <div className="dashboard">
       <Container>
@@ -74,10 +76,10 @@ const Dashboard = () => {
             />
           </div>
           <div className="sort-options">
-            <select>
+            <select value={sortOrder} onChange={handleSortChange}>
               <option value="latest">Latest</option>
               <option value="mostLiked">Most Liked</option>
-              <option value="Oldest">Oldest</option>
+              <option value="oldest">Oldest</option>
             </select>
           </div>
           <Row>

@@ -45,17 +45,25 @@ export const signUp = async (data: any): Promise<any> => {
   }
 };
 
-export const dashboardBlog = async (searchQuery = ''): Promise<any> => {
+export const dashboardBlog = async (
+  searchQuery = "",
+  sortOrder = "latest"
+): Promise<any> => {
   const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
 
   const headers = {
     "Content-Type": "application/json",
     Authorization: `${accessToken}`,
   };
-  const queryParams = searchQuery ? { title: searchQuery } : {};
+  const queryParams: any = {};
+  if (searchQuery) {
+    queryParams.title = searchQuery;
+  }
+  queryParams.sortOrder = sortOrder;
+
   try {
     let result: any = await apiCallGet(
-      APIURL["GET_DASHBOARD_BLOG"] ,
+      APIURL["GET_DASHBOARD_BLOG"],
       queryParams,
       false,
       headers
@@ -192,7 +200,7 @@ export const logout = async (): Promise<any> => {
   }
 };
 
-export const LikeBlogPost= async (data:any): Promise<any> => {
+export const LikeBlogPost = async (data: any): Promise<any> => {
   const accessToken = store?.getState()?.authenticationDataSlice?.jwtToken;
 
   const headers = {
@@ -204,7 +212,7 @@ export const LikeBlogPost= async (data:any): Promise<any> => {
     let result: any = await apiCallPost(
       APIURL["LIKEPOST"],
       {
-        id:id
+        id: id,
       },
       {},
       false,
