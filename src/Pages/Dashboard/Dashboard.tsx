@@ -14,13 +14,11 @@ import debounce from "debounce";
 const Dashboard = () => {
   const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [fullBlogModal, setFullBlogModal] = useState<boolean>(false);
-  const [currentTitle, setCurrentTitle] = useState<string>("");
-  const [currentDescription, setCurrentDescription] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<any>();
   const [sortOrder, setSortOrder] = useState<string>("latest");
   const [currentComment, setCurrentComment] = useState<string>("");
   const [activeBlogId, setActiveBlogId] = useState<string | null>(null);
+  const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
   const fetchData = useCallback(async (query: string, order: string) => {
     try {
@@ -44,14 +42,6 @@ const Dashboard = () => {
     debouncedFetchData(searchQuery, sortOrder);
   }, [searchQuery, sortOrder, debouncedFetchData]);
 
-  const handleCloseModal = () => {
-    setFullBlogModal(false);
-  };
-  const handleReadMoreClick = (title: string, description: string) => {
-    setCurrentTitle(title);
-    setCurrentDescription(description);
-    setFullBlogModal(true);
-  };
   const handleLikeClick = async (_id: string) => {
     const blogId: any = {
       id: _id,
@@ -82,6 +72,10 @@ const Dashboard = () => {
       console.error("Error posting comment:", error);
     }
   };
+  const toggleExpandPost = (id: string) => {
+    setExpandedPostId(expandedPostId === id ? null : id);
+  };
+
   return (
     <div className="dashboard">
       <Container>
@@ -104,22 +98,22 @@ const Dashboard = () => {
           </div>
           <Row>
             {data?.map((item: any, index: any) => (
-              <Col  xs={12} key={index}>
+              <Col xs={12} key={index}>
                 <div className="dashboard-card">
                   <h3>{item?.title}</h3>
                   <h5>
                     {loading ? (
                       <Shimmer height={"20px"} width="150px" />
+                    ) : expandedPostId === item._id ? (
+                      item?.description
                     ) : (
                       `${item?.description.substring(0, 100)}`
                     )}
                     {item?.description.length > 100 && (
-                      <button
-                        onClick={() =>
-                          handleReadMoreClick(item?.title, item?.description)
-                        }
-                      >
-                        Read More
+                      <button onClick={() => toggleExpandPost(item._id)}>
+                        {expandedPostId === item._id
+                          ? "Show Less"
+                          : "Read More"}
                       </button>
                     )}
                   </h5>
@@ -145,12 +139,6 @@ const Dashboard = () => {
           </Row>
         </div>
       </Container>
-      <FullBlog
-        show={fullBlogModal}
-        onHide={handleCloseModal}
-        title={currentTitle}
-        description={currentDescription}
-      />
     </div>
   );
 };
