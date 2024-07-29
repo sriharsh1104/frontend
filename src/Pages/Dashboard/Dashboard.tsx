@@ -107,7 +107,7 @@ const Dashboard = () => {
                     <div className="comments-section">
                       {item?.comments?.map((comment: any) => (
                         <div key={comment?._id} className="comment">
-                          <strong>{comment?.username}</strong> {/* Display username */}
+                          <strong>{comment?.userName}</strong> {/* Display username */}
                           <p>{comment?.content}</p>
                         </div>
                       ))}
