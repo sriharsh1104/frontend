@@ -18,12 +18,12 @@ const Dashboard = () => {
   const [currentComment, setCurrentComment] = useState<string>("");
   const [activeBlogId, setActiveBlogId] = useState<string | null>(null);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
+  const [visibleCommentsPostId, setVisibleCommentsPostId] = useState<string | null>(null);
 
   const fetchData = useCallback(async (query: string, order: string) => {
     try {
       const response = await dashboardBlog(query, order);
       setData(response?.data);
-      console.log("response", response);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
@@ -42,20 +42,19 @@ const Dashboard = () => {
   }, [searchQuery, sortOrder, debouncedFetchData]);
 
   const handleLikeClick = async (_id: string) => {
-    const blogId: any = {
-      id: _id,
-    };
+    const blogId: any = { id: _id };
     try {
-      const result = await LikeBlogPost(blogId);
+      await LikeBlogPost(blogId);
       await fetchData(searchQuery, sortOrder);
-      console.log("result", result);
     } catch (error) {
       console.error("Error liking the post:", error);
     }
   };
+
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOrder(event.target.value);
   };
+
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentComment(event.target.value);
   };
@@ -71,8 +70,13 @@ const Dashboard = () => {
       console.error("Error posting comment:", error);
     }
   };
+
   const toggleExpandPost = (id: string) => {
     setExpandedPostId(expandedPostId === id ? null : id);
+  };
+
+  const toggleCommentsVisibility = (id: string) => {
+    setVisibleCommentsPostId(visibleCommentsPostId === id ? null : id);
   };
 
   return (
@@ -96,101 +100,63 @@ const Dashboard = () => {
             </select>
           </div>
           <Row>
-            {data?.map((item: any, index: any) => (
-              <Col xs={12} key={index}>
+            {data?.map((item: any) => (
+              <Col xs={12} key={item._id}>
                 <div className="dashboard-card">
-                  <h3>{item?.title}</h3>
-                  <h5>
-                    {loading ? (
-                      <Shimmer height={"20px"} width="150px" />
-                    ) : expandedPostId === item._id ? (
-                      item?.description
-                    ) : (
-                      `${item?.description.substring(0, 100)}`
-                    )}
-                    {item?.description.length > 100 && (
-                      <button onClick={() => toggleExpandPost(item._id)}>
-                        {expandedPostId === item._id
-                          ? "Show Less"
-                          : "Read More"}
-                      </button>
-                    )}
-                  </h5>
-                  <div onClick={() => handleLikeClick(item?._id)}>
-                    <LikeIcon />
-                    {item?.likes}
-                  </div>
-                  {/* Display comments */}
-                  <div className="comments-section">
-                    {item.comments.map((comment: any) => (
-                      <div key={comment._id} className="comment">
-                        <p>{comment.content}</p>
-                        {/* Optionally display user or timestamp */}
+                  {visibleCommentsPostId === item._id ? (
+                    <div className="comments-section">
+                      {item?.comments?.map((comment: any) => (
+                        <div key={comment?._id} className="comment">
+                          <strong>{comment?.username}</strong> {/* Display username */}
+                          <p>{comment?.content}</p>
+                        </div>
+                      ))}
+                      <div className="comment-section">
+                        <input
+                          type="text"
+                          placeholder="Add a comment..."
+                          value={currentComment}
+                          onChange={handleCommentChange}
+                        />
+                        <button onClick={() => handleCommentSubmit(item._id)}>
+                          Post
+                        </button>
                       </div>
-                    ))}
-                  </div>
-                  {/* Comment input section */}
-                  <div className="comment-section">
-                    <input
-                      type="text"
-                      placeholder="Add a comment..."
-                      value={activeBlogId === item._id ? currentComment : ""}
-                      onChange={handleCommentChange}
-                      onFocus={() => setActiveBlogId(item._id)}
-                    />
-                    <button onClick={() => handleCommentSubmit(item._id)}>
-                      Post
-                    </button>
-                  </div>
-                </div>
-              </Col>
-            ))}
-            {data?.map((item: any, index: any) => (
-              <Col xs={12} key={index}>
-                <div className="dashboard-card">
-                  <h3>{item?.title}</h3>
-                  <h5>
-                    {loading ? (
-                      <Shimmer height={"20px"} width="150px" />
-                    ) : expandedPostId === item._id ? (
-                      item?.description
-                    ) : (
-                      `${item?.description.substring(0, 100)}`
-                    )}
-                    {item?.description.length > 100 && (
-                      <button onClick={() => toggleExpandPost(item._id)}>
-                        {expandedPostId === item._id
-                          ? "Show Less"
-                          : "Read More"}
+                      <button
+                        onClick={() => setVisibleCommentsPostId(null)}
+                        className="hide-button"
+                      >
+                        Hide
                       </button>
-                    )}
-                  </h5>
-                  <div onClick={() => handleLikeClick(item?._id)}>
-                    <LikeIcon />
-                    {item?.likes}
-                  </div>
-                  {/* Display comments */}
-                  <div className="comments-section">
-                    {item.comments.map((comment: any) => (
-                      <div key={comment._id} className="comment">
-                        <p>{comment.content}</p>
-                        {/* Optionally display user or timestamp */}
+                    </div>
+                  ) : (
+                    <>
+                      <h3>{item?.title}</h3>
+                      <h5>
+                        {loading ? (
+                          <Shimmer height={"20px"} width="150px" />
+                        ) : expandedPostId === item._id ? (
+                          item?.description
+                        ) : (
+                          `${item?.description.substring(0, 100)}`
+                        )}
+                        {item?.description.length > 100 && (
+                          <button onClick={() => toggleExpandPost(item._id)}>
+                            {expandedPostId === item._id
+                              ? "Show Less"
+                              : "Read More"}
+                          </button>
+                        )}
+                      </h5>
+                      <div onClick={() => handleLikeClick(item?._id)}>
+                        <LikeIcon />
+                        {item?.likes}
                       </div>
-                    ))}
-                  </div>
-                  {/* Comment input section */}
-                  <div className="comment-section">
-                    <input
-                      type="text"
-                      placeholder="Add a comment..."
-                      value={activeBlogId === item._id ? currentComment : ""}
-                      onChange={handleCommentChange}
-                      onFocus={() => setActiveBlogId(item._id)}
-                    />
-                    <button onClick={() => handleCommentSubmit(item._id)}>
-                      Post
-                    </button>
-                  </div>
+                      <button onClick={() => toggleCommentsVisibility(item._id)}>
+                        {visibleCommentsPostId === item._id ? "Hide Comments" : "Reply"}
+                      </button>
+                    </>
+                  )}
                 </div>
               </Col>
             ))}
