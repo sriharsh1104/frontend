@@ -7,7 +7,6 @@ import {
   LikeBlogPost,
   postComment,
 } from "../../Api/user.action";
-import FullBlog from "../MyBlog/FullBlog/FullBlog";
 import { LikeIcon } from "../../Assets/Icon/svg/SvgIcons";
 import debounce from "debounce";
 
@@ -121,6 +120,65 @@ const Dashboard = () => {
                     <LikeIcon />
                     {item?.likes}
                   </div>
+                  {/* Display comments */}
+                  <div className="comments-section">
+                    {item.comments.map((comment: any) => (
+                      <div key={comment._id} className="comment">
+                        <p>{comment.content}</p>
+                        {/* Optionally display user or timestamp */}
+                      </div>
+                    ))}
+                  </div>
+                  {/* Comment input section */}
+                  <div className="comment-section">
+                    <input
+                      type="text"
+                      placeholder="Add a comment..."
+                      value={activeBlogId === item._id ? currentComment : ""}
+                      onChange={handleCommentChange}
+                      onFocus={() => setActiveBlogId(item._id)}
+                    />
+                    <button onClick={() => handleCommentSubmit(item._id)}>
+                      Post
+                    </button>
+                  </div>
+                </div>
+              </Col>
+            ))}
+            {data?.map((item: any, index: any) => (
+              <Col xs={12} key={index}>
+                <div className="dashboard-card">
+                  <h3>{item?.title}</h3>
+                  <h5>
+                    {loading ? (
+                      <Shimmer height={"20px"} width="150px" />
+                    ) : expandedPostId === item._id ? (
+                      item?.description
+                    ) : (
+                      `${item?.description.substring(0, 100)}`
+                    )}
+                    {item?.description.length > 100 && (
+                      <button onClick={() => toggleExpandPost(item._id)}>
+                        {expandedPostId === item._id
+                          ? "Show Less"
+                          : "Read More"}
+                      </button>
+                    )}
+                  </h5>
+                  <div onClick={() => handleLikeClick(item?._id)}>
+                    <LikeIcon />
+                    {item?.likes}
+                  </div>
+                  {/* Display comments */}
+                  <div className="comments-section">
+                    {item.comments.map((comment: any) => (
+                      <div key={comment._id} className="comment">
+                        <p>{comment.content}</p>
+                        {/* Optionally display user or timestamp */}
+                      </div>
+                    ))}
+                  </div>
+                  {/* Comment input section */}
                   <div className="comment-section">
                     <input
                       type="text"
