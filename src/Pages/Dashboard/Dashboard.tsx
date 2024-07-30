@@ -18,7 +18,9 @@ const Dashboard = () => {
   const [currentComment, setCurrentComment] = useState<string>("");
   const [activeBlogId, setActiveBlogId] = useState<string | null>(null);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
-  const [visibleCommentsPostId, setVisibleCommentsPostId] = useState<string | null>(null);
+  const [visibleCommentsPostId, setVisibleCommentsPostId] = useState<
+    string | null
+  >(null);
 
   const fetchData = useCallback(async (query: string, order: string) => {
     try {
@@ -84,84 +86,90 @@ const Dashboard = () => {
       <Container>
         <div className="dashboard__top">
           <h5>Dashboard</h5>
-          <div className="search-bar">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search for blogs..."
-            />
+          <div className="dashboard__actions">
+            <div className="search-bar">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search for blogs..."
+              />
+            </div>
+            <div className="sort-options">
+              <select value={sortOrder} onChange={handleSortChange}>
+                <option value="latest">Latest</option>
+                <option value="mostLiked">Most Liked</option>
+                <option value="oldest">Oldest</option>
+              </select>
+            </div>
           </div>
-          <div className="sort-options">
-            <select value={sortOrder} onChange={handleSortChange}>
-              <option value="latest">Latest</option>
-              <option value="mostLiked">Most Liked</option>
-              <option value="oldest">Oldest</option>
-            </select>
-          </div>
-          <Row>
-            {data?.map((item: any) => (
-              <Col xs={12} key={item._id}>
-                <div className="dashboard-card">
-                  {visibleCommentsPostId === item._id ? (
-                    <div className="comments-section">
-                      {item?.comments?.map((comment: any) => (
-                        <div key={comment?._id} className="comment">
-                          <strong>{comment?.userName}</strong> {/* Display username */}
-                          <p>{comment?.content}</p>
-                        </div>
-                      ))}
-                      <div className="comment-section">
-                        <input
-                          type="text"
-                          placeholder="Add a comment..."
-                          value={currentComment}
-                          onChange={handleCommentChange}
-                        />
-                        <button onClick={() => handleCommentSubmit(item._id)}>
-                          Post
-                        </button>
+        </div>
+        <Row>
+          {data?.map((item: any) => (
+            <Col xs={3} key={item._id}>
+              <div className="dashboard-card">
+                {visibleCommentsPostId === item._id ? (
+                  <div className="comments-section">
+                    {item?.comments?.map((comment: any) => (
+                      <div key={comment?._id} className="comment">
+                        <strong>{comment?.userName}</strong>{" "}
+                        <p>{comment?.content}</p>
                       </div>
-                      <button
-                        onClick={() => setVisibleCommentsPostId(null)}
-                        className="hide-button"
-                      >
-                        Hide
+                    ))}
+                    <div className="comment-section">
+                      <input
+                        type="text"
+                        placeholder="Add a comment..."
+                        value={currentComment}
+                        onChange={handleCommentChange}
+                      />
+                      <button onClick={() => handleCommentSubmit(item._id)}>
+                        Post
                       </button>
                     </div>
-                  ) : (
-                    <>
-                      <h3>{item?.title}</h3>
-                      <h5>
-                        {loading ? (
-                          <Shimmer height={"20px"} width="150px" />
-                        ) : expandedPostId === item._id ? (
-                          item?.description
-                        ) : (
-                          `${item?.description.substring(0, 100)}`
-                        )}
-                        {item?.description.length > 100 && (
-                          <button onClick={() => toggleExpandPost(item._id)}>
-                            {expandedPostId === item._id
-                              ? "Show Less"
-                              : "Read More"}
-                          </button>
-                        )}
-                      </h5>
-                      <div onClick={() => handleLikeClick(item?._id)}>
-                        <LikeIcon />
-                        {item?.likes}
-                      </div>
-                      <button onClick={() => toggleCommentsVisibility(item._id)}>
-                        {visibleCommentsPostId === item._id ? "Hide Comments" : "Reply"}
-                      </button>
-                    </>
-                  )}
-                </div>
-              </Col>
-            ))}
-          </Row>
-        </div>
+                    <button
+                      onClick={() => setVisibleCommentsPostId(null)}
+                      className="hide-button"
+                    >
+                      Hide
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <h3>{item?.title}</h3>
+                    <h5>
+                      {loading ? (
+                        <Shimmer height={"20px"} width="150px" />
+                      ) : expandedPostId === item._id ? (
+                        item?.description
+                      ) : (
+                        `${item?.description.substring(0, 100)}`
+                      )}
+                      {item?.description.length > 100 && (
+                        <button onClick={() => toggleExpandPost(item._id)}>
+                          {expandedPostId === item._id
+                            ? "Show Less"
+                            : "Read More"}
+                        </button>
+                      )}
+                    </h5>
+                    <div onClick={() => handleLikeClick(item?._id)}>
+                      <LikeIcon />
+                      {item?.likes}
+                    </div>
+                    <button
+                      onClick={() => toggleCommentsVisibility(item._id)}
+                    >
+                      {visibleCommentsPostId === item._id
+                        ? "Hide Comments"
+                        : "Reply"}
+                    </button>
+                  </>
+                )}
+              </div>
+            </Col>
+          ))}
+        </Row>
       </Container>
     </div>
   );
